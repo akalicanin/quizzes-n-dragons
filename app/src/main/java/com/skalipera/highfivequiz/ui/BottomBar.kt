@@ -41,9 +41,9 @@ fun BottomBar(currentScreen : GameViewModel.ScreenType,
             {
 
                 var dragonsIcon = if (currentScreen == ScreenType.DRAGONS) {
-                    R.drawable.filler_icon // TODO: ACTIVE icon
+                    R.drawable.dragon_barn_active // TODO: ACTIVE icon
                 } else {
-                    R.drawable.filler_icon // INACTIVE / regular icon
+                    R.drawable.dragon_barn // INACTIVE / regular icon
                 }
 
                 Image(
@@ -57,9 +57,9 @@ fun BottomBar(currentScreen : GameViewModel.ScreenType,
             {
 
                 var shopIcon = if (currentScreen == ScreenType.SHOP) {
-                    R.drawable.filler_icon // TODO: ACTIVE icon
+                    R.drawable.shop_button_active // TODO: ACTIVE icon
                 } else {
-                    R.drawable.filler_icon // INACTIVE / regular icon
+                    R.drawable.shop_button // INACTIVE / regular icon
                 }
 
                 Image(
@@ -71,9 +71,9 @@ fun BottomBar(currentScreen : GameViewModel.ScreenType,
         }
 
         var homeIcon = if (currentScreen == ScreenType.HOME) {
-            R.drawable.ic_launcher_foreground // TODO: ACTIVE icon
+            R.drawable.home_button_active // TODO: ACTIVE icon
         } else {
-            R.drawable.ic_launcher_foreground // INACTIVE / regular icon
+            R.drawable.home_button // INACTIVE / regular icon
         }
 
         Image(

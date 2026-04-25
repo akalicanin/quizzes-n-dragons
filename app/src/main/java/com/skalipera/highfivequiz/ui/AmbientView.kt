@@ -51,7 +51,7 @@ fun AmbientView(
 
         // background Image
         Image(
-            painter = painterResource(id = R.drawable.filler_background), // Replace with dungeon/forest background
+            painter = painterResource(id = R.drawable.cave_background), // Replace with dungeon/forest background
             contentDescription = "Ambient Background",
             contentScale = ContentScale.Crop, // Zooms the image to perfectly fill the box without stretching
             modifier = Modifier.fillMaxSize()
