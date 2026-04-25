@@ -74,6 +74,7 @@ class GameViewModel : ViewModel() {
     }
 
     // Player data state
+    val myNearbyId = (1000..9999).random().toString() // Unique ID for this session
     var playerNickname by mutableStateOf("Barcelona")
         private set
     var playerRank by mutableStateOf(0)
