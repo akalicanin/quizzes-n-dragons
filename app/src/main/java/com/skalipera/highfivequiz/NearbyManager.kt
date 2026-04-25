@@ -18,16 +18,20 @@ class NearbyController(
     // --- CALLBACKS ---
     private val connectionLifecycleCallback = object : ConnectionLifecycleCallback() {
         override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
+            // Stop advertising and discovery to stabilize the current connection attempt
+            connectionsClient.stopAdvertising()
+            connectionsClient.stopDiscovery()
+
             connectionsClient.acceptConnection(endpointId, payloadCallback)
         }
 
         override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
             if (result.status.isSuccess) {
                 opponentEndpointId = endpointId
-                // Javljamo ViewModel-u da smo uspeli!
                 viewModel.onConnectionSuccess(endpointId)
             } else {
-                viewModel.onSearchingStatusChanged(false)
+                // If it failed (maybe due to the collision), restart searching
+                startPlay()
             }
         }
 
@@ -39,7 +43,14 @@ class NearbyController(
 
     private val endpointDiscoveryCallback = object : EndpointDiscoveryCallback() {
         override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
-            connectionsClient.requestConnection(viewModel.playerNickname, endpointId, connectionLifecycleCallback)
+            // STOP discovery immediately to prevent multiple requests/collisions
+            connectionsClient.stopDiscovery()
+
+            connectionsClient.requestConnection(
+                viewModel.playerNickname,
+                endpointId,
+                connectionLifecycleCallback
+            )
         }
         override fun onEndpointLost(endpointId: String) {}
     }

@@ -66,7 +66,7 @@ class GameViewModel : ViewModel() {
     // Notification message state
     var isMessageVisible by mutableStateOf(false)
         private set
-    var currentMessageText by mutableStateOf("")
+    var currentMessageText by mutableStateOf("Uspesno povezano!")
         private set
 
     // Player data state
