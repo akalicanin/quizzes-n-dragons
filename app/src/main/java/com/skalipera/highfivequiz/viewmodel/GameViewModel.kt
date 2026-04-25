@@ -51,15 +51,20 @@ class GameViewModel : ViewModel() {
     )
 
     val allDragons = listOf(
-        Dragon("dragon_01", "Math", R.drawable.filler_dragon, QuestionTopic.MATH),
-        Dragon("dragon_02", "Chem", R.drawable.filler_icon, QuestionTopic.SCIENCE),
-        Dragon("dragon_03", "Geo", R.drawable.filler_icon, QuestionTopic.GEOHISTORY)
+        Dragon("dragon_01", "MathAndPhys", R.drawable.dragon_math, QuestionTopic.MATH),
+        Dragon("dragon_02", "ChemAndBio", R.drawable.dragon_science, QuestionTopic.SCIENCE),
+        Dragon("dragon_03", "GeoAndHist", R.drawable.dragon_geohistory, QuestionTopic.GEOHISTORY),
+        Dragon("dragon_04", "Hacker", R.drawable.dragon_hacker, QuestionTopic.HACKER),
+        Dragon("dragon_05", "Culture", R.drawable.dragon_musicandart, QuestionTopic.POP_CULTURE)
+
     )
 
     val myDragons = listOf(
-        Dragon("dragon_01", "Math", R.drawable.filler_dragon, QuestionTopic.MATH),
-        Dragon("dragon_02", "Chem", R.drawable.filler_icon, QuestionTopic.SCIENCE),
-        Dragon("dragon_03", "Geo", R.drawable.filler_icon, QuestionTopic.GEOHISTORY)
+        Dragon("dragon_01", "MathAndPhys", R.drawable.dragon_math, QuestionTopic.MATH),
+        Dragon("dragon_02", "ChemAndBio", R.drawable.dragon_science, QuestionTopic.SCIENCE),
+        Dragon("dragon_03", "GeoAndHist", R.drawable.dragon_geohistory, QuestionTopic.GEOHISTORY),
+        Dragon("dragon_04", "Hacker", R.drawable.dragon_hacker, QuestionTopic.HACKER),
+        Dragon("dragon_05", "Culture", R.drawable.dragon_musicandart, QuestionTopic.POP_CULTURE)
     )
 
     // Screen state
@@ -147,6 +152,7 @@ class GameViewModel : ViewModel() {
     fun navigateTo(screen: ScreenType) {
         currentScreen = screen
     }
+
     fun updateNickname(newName: String) {
         if (newName.isNotBlank() && newName.length <= 12) {
             playerNickname = newName

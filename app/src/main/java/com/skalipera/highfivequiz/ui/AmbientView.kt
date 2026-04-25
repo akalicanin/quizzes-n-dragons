@@ -6,9 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +27,8 @@ import com.skalipera.highfivequiz.R
 fun AmbientView(
     rank: Int,
     selectedDragonImage: Int,
+    isSearching: Boolean,
+    isConnected: Boolean,
     dragonClicked: () -> Unit,
     startMatching: () -> Unit,
     openDragonSelection: () -> Unit,
@@ -51,7 +55,7 @@ fun AmbientView(
 
         // background Image
         Image(
-            painter = painterResource(id = R.drawable.filler_background), // Replace with dungeon/forest background
+            painter = painterResource(id = R.drawable.cave_background), // Replace with dungeon/forest background
             contentDescription = "Ambient Background",
             contentScale = ContentScale.Crop, // Zooms the image to perfectly fill the box without stretching
             modifier = Modifier.fillMaxSize()
@@ -59,17 +63,22 @@ fun AmbientView(
 
         // main dragon
         Image(
-            painter = painterResource(id = R.drawable.filler_dragon), // TODO Replace with your dragon sprite
+            painter = painterResource(id = selectedDragonImage), // Replaced filler_dragon with selectedDragonImage
             contentDescription = "Your Dragon",
             modifier = Modifier
                 .align(Alignment.Center) // Put him right in the middle
-                .size(200.dp) // Make him big!
+                .size(320.dp) // Make him big!
                 .graphicsLayer {
                     // Apply the breathing animation scale to the X and Y axes
                     scaleX = breathingScale
                     scaleY = breathingScale
                 }
-                .clickable { dragonClicked() }
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null // This removes the fade/ripple effect
+                ) {
+                    dragonClicked()
+                }
         )
 
         // Play button
@@ -89,15 +98,34 @@ fun AmbientView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // play button
+            val buttonText = when {
+                isConnected -> "OPPONENT FOUND!"
+                isSearching -> "LOOKING FOR PLAYERS..."
+                else -> "PLAY"
+            }
+            val buttonColor = when {
+                isConnected -> Color(0xFF2196F3) // Blue for success
+                isSearching -> Color(0xFFFF9800) // Orange for searching
+                else -> Color(0xFF4CAF50) // Green for idle
+            }
+            val fontSize = if (isSearching) 14.sp else 24.sp
+
             Box(
                 modifier = Modifier
                     .size(width = 180.dp, height = 70.dp)
                     .clip(CutCornerShape(16.dp))
-                    .background(Color(0xFF4CAF50))
-                    .clickable { startMatching() },
+                    .background(buttonColor)
+                    .clickable(enabled = !isSearching && !isConnected) { startMatching() },
                 contentAlignment = Alignment.Center
             ) {
-                Text("PLAY", color = Color.Black, fontSize = 28.sp, fontWeight = FontWeight.Black)
+                Text(
+                    text = buttonText,
+                    color = Color.White,
+                    fontSize = fontSize,
+                    fontWeight = FontWeight.Black,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
             }
 
             // dragon selection box
@@ -105,7 +133,7 @@ fun AmbientView(
                 modifier = Modifier
                     .size(70.dp)
                     .clip(CutCornerShape(12.dp))
-                    .background(Color(0xFF333333))
+                    .background(Color(0xFFF5F198).copy(alpha = 0.6f))
                     .clickable { openDragonSelection() },
                 contentAlignment = Alignment.Center
             ) {
@@ -133,7 +161,7 @@ fun AmbientView(
             )
             Text(
                 text = rank.toString(),
-                color = Color.Black,
+                color = Color.White,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Black
             )

@@ -49,7 +49,7 @@ fun TopBar(
             modifier = Modifier.clickable { profileClicked() }
         ) {
             Image(
-                painter = painterResource(id = R.drawable.filler_icon),
+                painter = painterResource(id = R.drawable.profile_icon),
                 contentDescription = "Profile",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -76,7 +76,7 @@ fun TopBar(
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.filler_icon),
+                    painter = painterResource(id = R.drawable.gold_icon),
                     contentDescription = "Coins",
                     modifier = Modifier.size(24.dp)
                 )
@@ -89,7 +89,7 @@ fun TopBar(
 
             // Settings button
             Image(
-                painter = painterResource(id = R.drawable.filler_icon), // Your settings icon
+                painter = painterResource(id = R.drawable.setting_icon), // Your settings icon
                 contentDescription = "Settings",
                 modifier = Modifier
                     .size(32.dp)

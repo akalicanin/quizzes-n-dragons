@@ -71,7 +71,7 @@ fun DragonsScreen(
         {
             // GO BACK button
             Image(
-                painter = painterResource(id = R.drawable.filler_icon), // TODO Replace with backwards sprite
+                painter = painterResource(id = R.drawable.arrow_key_left), // TODO Replace with backwards sprite
                 contentDescription = "Back button",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -87,7 +87,7 @@ fun DragonsScreen(
             )
             // GO FORWARD button
             Image(
-                painter = painterResource(id = R.drawable.filler_icon), // TODO Replace with forward sprite
+                painter = painterResource(id = R.drawable.arrow_key_right), // TODO Replace with forward sprite
                 contentDescription = "Next button",
                 modifier = Modifier
                     .clickable{clickedForward()}

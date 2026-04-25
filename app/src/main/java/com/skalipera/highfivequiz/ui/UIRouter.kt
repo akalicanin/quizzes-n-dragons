@@ -83,7 +83,9 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                         GameViewModel.ScreenType.HOME -> {
                             AmbientView(
                                 rank = viewModel.playerRank,
-                                viewModel.selectedDragon.imageResId,
+                                selectedDragonImage = viewModel.selectedDragon.imageResId,
+                                isSearching = viewModel.isSearching,
+                                isConnected = viewModel.isConnected,
                                 startMatching = {
                                     // Kada klikne Play, prvo proveravamo dozvole
                                     permissionLauncher.launch(arrayOf(
@@ -99,7 +101,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                 openDragonSelection = {
                                     viewModel.navigateTo(GameViewModel.ScreenType.DRAGON_SELECT)
                                 }
-                                )
+                            )
                         }
                         GameViewModel.ScreenType.DRAGONS -> {
                             DragonsScreen(

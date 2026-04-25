@@ -43,8 +43,8 @@ fun SettingsDialog(
                     value = musicVolume,
                     onValueChange = { musicVolume = it }, // 'it' is the new slider value
                     colors = SliderDefaults.colors(
-                        thumbColor = Color.Green,
-                        activeTrackColor = Color.Green
+                        thumbColor = Color(0xFFAEE683),
+                        activeTrackColor = Color(0xFFAEE683)
                     )
                 )
 
@@ -56,8 +56,8 @@ fun SettingsDialog(
                     value = sfxVolume,
                     onValueChange = { sfxVolume = it },
                     colors = SliderDefaults.colors(
-                        thumbColor = Color.Green,
-                        activeTrackColor = Color.Green
+                        thumbColor = Color(0xFFAEE683),
+                        activeTrackColor = Color(0xFFAEE683)
                     )
                 )
 
@@ -67,7 +67,7 @@ fun SettingsDialog(
                     onClick = { onDismiss() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
                 ) {
-                    Text("Close")
+                    Text("Close", color = Color.White)
                 }
             }
         }
