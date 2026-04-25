@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.skalipera.highfivequiz.ui.architecture.UiEffect
 import com.skalipera.highfivequiz.ui.architecture.UiEvent
 import com.skalipera.highfivequiz.ui.architecture.UiState
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 data class MainMenuUiState(
     val playerName: String = "Player",
@@ -24,10 +27,14 @@ sealed interface MainMenuUiEffect : UiEffect {
 class MainMenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(MainMenuUiState())
     val uiState: StateFlow<MainMenuUiState> = _uiState.asStateFlow()
+    private val _effects = MutableSharedFlow<MainMenuUiEffect>(extraBufferCapacity = 1)
+    val effects: SharedFlow<MainMenuUiEffect> = _effects.asSharedFlow()
 
     fun onEvent(event: MainMenuUiEvent) {
         when (event) {
-            MainMenuUiEvent.OnStartBattleClicked -> Unit
+            MainMenuUiEvent.OnStartBattleClicked -> {
+                _effects.tryEmit(MainMenuUiEffect.NavigateToBattleSetup)
+            }
         }
     }
 }
