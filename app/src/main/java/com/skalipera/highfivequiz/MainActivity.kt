@@ -78,7 +78,19 @@ class MainActivity : ComponentActivity() {
         val message = NdefMessage(
             arrayOf(NdefRecord.createMime(HANDSHAKE_MIME_TYPE, dataBytes))
         )
-        runCatching { adapter.setNdefPushMessage(message, this) }
+        setLegacyNdefPushMessage(adapter = adapter, message = message)
+    }
+
+    private fun setLegacyNdefPushMessage(adapter: NfcAdapter, message: NdefMessage) {
+        runCatching {
+            val method = NfcAdapter::class.java.getMethod(
+                "setNdefPushMessage",
+                NdefMessage::class.java,
+                android.app.Activity::class.java,
+                Array<android.app.Activity>::class.java
+            )
+            method.invoke(adapter, message, this, emptyArray<android.app.Activity>())
+        }
     }
 
     private fun handleNfcIntent(intent: Intent?) {
