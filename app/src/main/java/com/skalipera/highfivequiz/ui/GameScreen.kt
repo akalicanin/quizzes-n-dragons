@@ -50,6 +50,7 @@ fun GameScreen() {
             // Game backgroound with dragon
             AmbientView(
                 rank = playerRank,
+                startMatching = {},
                 dragonClicked = {
                     currentMessageText = "You poked your dragon!"
                     isMessageVisible = true

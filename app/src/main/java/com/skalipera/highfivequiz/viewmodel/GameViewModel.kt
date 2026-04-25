@@ -9,13 +9,31 @@ import androidx.lifecycle.ViewModel
 class GameViewModel : ViewModel() {
 
     enum class ScreenType() {
-        HOME,
         DRAGONS,
+        HOME,
         SHOP,
         QUIZ_ACTIVE,
+        BATTLE_SCREEN,
         START_SCREEN,
         FINISH_SCREEN
     }
+
+    enum class QuestionTopic() {
+        MATEMATIKA,
+        GEOGRAFIJA,
+        ISTORIJA,
+        BIOLOGIJA,
+        HEMIJA,
+        POP_KULTURA
+    }
+
+    // Question class
+    data class Question(
+        val topic : QuestionTopic,
+        val text : String,
+        val answers : List<String>,
+        val correctAnswer : Int
+    )
 
     // Screen state
     var currentScreen by mutableStateOf(ScreenType.HOME)

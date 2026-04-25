@@ -1,5 +1,12 @@
 package com.skalipera.highfivequiz.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.skalipera.highfivequiz.ui.dialogs.ProfileDialog
 import com.skalipera.highfivequiz.ui.dialogs.SettingsDialog
 import com.skalipera.highfivequiz.viewmodel.GameViewModel
@@ -21,7 +29,7 @@ fun UIRouter(viewModel: GameViewModel) {
     var showSettingsDialog by remember {mutableStateOf(false)}
     var showProfileDialog by remember {mutableStateOf(false)}
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray)) {
         Column(modifier = Modifier.fillMaxSize()) {
 
             TopBar(
@@ -32,33 +40,85 @@ fun UIRouter(viewModel: GameViewModel) {
             )
 
             Box(modifier = Modifier.weight(1f)) {
-                when (viewModel.currentScreen) {
-                    GameViewModel.ScreenType.HOME -> {
-                        AmbientView(rank = viewModel.playerRank, dragonClicked = { })
-                    }
-                    GameViewModel.ScreenType.DRAGONS -> {
-                        DragonsScreen(
-                            "Temp",
-                            "Temp",
-                            "Temp",
-                            5,
-                            clickedForward = {},
-                            clickedBackward = {}
+
+                AnimatedContent(
+                    targetState = viewModel.currentScreen,
+                    transitionSpec = {
+                        // Compare the order of the screens to find the direction
+                        if (targetState.ordinal > initialState.ordinal) {
+                            // to the right
+                            (slideInHorizontally { fullWidth -> fullWidth }) togetherWith
+                                    (slideOutHorizontally { fullWidth -> -fullWidth })
+                        } else {
+                            // to the left
+                            (slideInHorizontally { fullWidth -> -fullWidth }) togetherWith
+                                    (slideOutHorizontally { fullWidth -> fullWidth })
+                        }
+                    },
+                    label = "Screen Transition"
+                ) { screenToDraw ->
+                    when (screenToDraw) {
+                        GameViewModel.ScreenType.HOME -> {
+                            AmbientView(rank = viewModel.playerRank, startMatching = {}, dragonClicked = { })
+                        }
+                        GameViewModel.ScreenType.DRAGONS -> {
+                            DragonsScreen(
+                                "Denaprom",
+                                "Mathematical, LEGENDARY",
+                                "Mathematical Dragon Type from kragujevac aleksandar denovic",
+                                5,
+                                clickedForward = {},
+                                clickedBackward = {}
                             )
-                    }
-                    GameViewModel.ScreenType.SHOP -> {
-                        ShopScreen()
-                    }
-                    GameViewModel.ScreenType.QUIZ_ACTIVE -> {
-                        //QuizScreen(                        )
-                    }
-                    GameViewModel.ScreenType.START_SCREEN -> {
+                        }
+                        GameViewModel.ScreenType.SHOP -> {
+                            ShopScreen()
+                        }
+                        GameViewModel.ScreenType.QUIZ_ACTIVE -> {
+                            //QuizScreen(                        )
+                        }
+                        GameViewModel.ScreenType.START_SCREEN -> {
 
-                    }
-                    GameViewModel.ScreenType.FINISH_SCREEN -> {
+                        }
+                        GameViewModel.ScreenType.BATTLE_SCREEN -> {
 
+                        }
+                        GameViewModel.ScreenType.FINISH_SCREEN -> {
+
+                        }
                     }
                 }
+
+//                when (viewModel.currentScreen) {
+//                    GameViewModel.ScreenType.HOME -> {
+//                        AmbientView(rank = viewModel.playerRank, dragonClicked = { })
+//                    }
+//                    GameViewModel.ScreenType.DRAGONS -> {
+//                        DragonsScreen(
+//                            "Denaprom",
+//                            "Mathematical, LEGENDARY",
+//                            "Mathematical Dragon Type from kragujevac aleksandar denovic",
+//                            5,
+//                            clickedForward = {},
+//                            clickedBackward = {}
+//                            )
+//                    }
+//                    GameViewModel.ScreenType.SHOP -> {
+//                        ShopScreen()
+//                    }
+//                    GameViewModel.ScreenType.QUIZ_ACTIVE -> {
+//                        //QuizScreen(                        )
+//                    }
+//                    GameViewModel.ScreenType.START_SCREEN -> {
+//
+//                    }
+//                    GameViewModel.ScreenType.BATTLE_SCREEN -> {
+//
+//                    }
+//                    GameViewModel.ScreenType.FINISH_SCREEN -> {
+//
+//                    }
+//                }
             }
 
             // 3. BOTTOM BAR (Always visible, but hides during a Quiz)
