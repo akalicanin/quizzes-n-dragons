@@ -319,7 +319,7 @@ fun NfcLobbyScreen(
 
     LaunchedEffect(role, playerName) {
         NfcHandshakeManager.startSession(role = role, playerName = playerName)
-        //(context as? MainActivity)?.updateOutgoingNfcMessage()
+        (context as? MainActivity)?.updateOutgoingNfcMessage()
     }
 
     Column(
