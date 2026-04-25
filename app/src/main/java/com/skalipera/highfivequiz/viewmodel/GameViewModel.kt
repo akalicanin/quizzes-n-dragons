@@ -2,10 +2,12 @@ package com.skalipera.highfivequiz.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.skalipera.highfivequiz.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class GameViewModel : ViewModel() {
 
@@ -29,8 +31,12 @@ class GameViewModel : ViewModel() {
         opponentName = name
         currentMessageText = "Uspešno povezan sa: $name"
         isMessageVisible = true
-        // Automatski prebaci na ekran za početak kviza
-        currentScreen = ScreenType.START_SCREEN
+
+        // Wait a second so the user can see "Opponent found!" on the button
+        viewModelScope.launch {
+            delay(2000)
+            currentScreen = ScreenType.START_SCREEN
+        }
     }
 
     enum class ScreenType() {

@@ -27,6 +27,8 @@ import com.skalipera.highfivequiz.R
 fun AmbientView(
     rank: Int,
     selectedDragonImage: Int,
+    isSearching: Boolean,
+    isConnected: Boolean,
     dragonClicked: () -> Unit,
     startMatching: () -> Unit,
     openDragonSelection: () -> Unit,
@@ -96,15 +98,34 @@ fun AmbientView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // play button
+            val buttonText = when {
+                isConnected -> "OPPONENT FOUND!"
+                isSearching -> "LOOKING FOR PLAYERS..."
+                else -> "PLAY"
+            }
+            val buttonColor = when {
+                isConnected -> Color(0xFF2196F3) // Blue for success
+                isSearching -> Color(0xFFFF9800) // Orange for searching
+                else -> Color(0xFF4CAF50) // Green for idle
+            }
+            val fontSize = if (isSearching) 14.sp else 24.sp
+
             Box(
                 modifier = Modifier
                     .size(width = 180.dp, height = 70.dp)
                     .clip(CutCornerShape(16.dp))
-                    .background(Color(0xFF4CAF50))
-                    .clickable { startMatching() },
+                    .background(buttonColor)
+                    .clickable(enabled = !isSearching && !isConnected) { startMatching() },
                 contentAlignment = Alignment.Center
             ) {
-                Text("PLAY", color = Color.Black, fontSize = 28.sp, fontWeight = FontWeight.Black)
+                Text(
+                    text = buttonText,
+                    color = Color.White,
+                    fontSize = fontSize,
+                    fontWeight = FontWeight.Black,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
             }
 
             // dragon selection box
@@ -112,7 +133,7 @@ fun AmbientView(
                 modifier = Modifier
                     .size(70.dp)
                     .clip(CutCornerShape(12.dp))
-                    .background(Color(0xFF333333))
+                    .background(Color(0xFFF5F198).copy(alpha = 0.6f))
                     .clickable { openDragonSelection() },
                 contentAlignment = Alignment.Center
             ) {
