@@ -7,7 +7,6 @@ import com.skalipera.highfivequiz.core.InventoryItemType
 import com.skalipera.highfivequiz.core.MatchOutcome
 import com.skalipera.highfivequiz.core.QuestionCategory
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.LongSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 
@@ -52,8 +51,8 @@ class AppTypeConverters {
     fun jsonToStringList(value: String): List<String> = json.decodeFromString(ListSerializer(String.serializer()), value)
 
     @TypeConverter
-    fun longListToJson(value: List<Long>?): String = json.encodeToString(ListSerializer(LongSerializer()), value.orEmpty())
+    fun longListToJson(value: List<Long>?): String = json.encodeToString(ListSerializer(Long.serializer()), value.orEmpty())
 
     @TypeConverter
-    fun jsonToLongList(value: String): List<Long> = json.decodeFromString(ListSerializer(LongSerializer()), value)
+    fun jsonToLongList(value: String): List<Long> = json.decodeFromString(ListSerializer(Long.serializer()), value)
 }
