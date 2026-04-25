@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import com.skalipera.highfivequiz.ui.utility.TimedMessage
 
@@ -20,6 +19,11 @@ fun GameScreen() {
     //notification message
     var isMessageVisible by remember { mutableStateOf(false) }
     var currentMessageText by remember { mutableStateOf("") }
+
+    //player data
+    var playerNickname by remember {mutableStateOf("DefaultName")}
+    var playerRank by remember { mutableStateOf(0 )}
+    var playerCoinAmount by remember { mutableStateOf(0 )}
 
     Box(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.align(Alignment.TopCenter).padding(50.dp)) {
@@ -35,6 +39,14 @@ fun GameScreen() {
                 incomingMessage -> currentMessageText = incomingMessage
                 isMessageVisible = true
             })
+        }
+
+        Box(modifier = Modifier.align(Alignment.TopCenter)) {
+            TopBar(
+                playerNickname, playerRank, playerCoinAmount,
+                settingsClicked = {},
+                profileClicked = {}
+                )
         }
     }
 }

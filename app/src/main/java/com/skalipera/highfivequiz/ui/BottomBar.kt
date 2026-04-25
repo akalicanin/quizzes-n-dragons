@@ -16,10 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skalipera.highfivequiz.R
 
-const val barHeight = 100
-
 @Composable
 fun BottomBar(onButtonClicked: (String) -> Unit) {
+
+    val barHeight = 100
+
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.BottomCenter
