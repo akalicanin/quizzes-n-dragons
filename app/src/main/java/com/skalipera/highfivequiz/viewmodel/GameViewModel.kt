@@ -28,8 +28,8 @@ class GameViewModel : ViewModel() {
         opponentName = name
         currentMessageText = "Uspešno povezan sa: $name"
         isMessageVisible = true
-        // Opciono: Automatski prebaci na ekran za početak kviza
-        // currentScreen = ScreenType.START_SCREEN
+        // Automatski prebaci na ekran za početak kviza
+        currentScreen = ScreenType.START_SCREEN
     }
 
     enum class ScreenType() {

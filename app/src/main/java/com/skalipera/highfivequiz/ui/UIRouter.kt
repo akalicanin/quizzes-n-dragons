@@ -123,7 +123,9 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
     // Prikaz poruke o uspešnom povezivanju
     if (viewModel.isMessageVisible) {
         LaunchedEffect(viewModel.isMessageVisible) {
-            Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_SHORT).show()
+            android.util.Log.d("UIRouter", "Showing success toast: ${viewModel.currentMessageText}")
+            Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_LONG).show()
+            kotlinx.coroutines.delay(1000) // Give it time to display before resetting state
             viewModel.dismissMessage()
         }
     }
