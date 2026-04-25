@@ -19,9 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.skalipera.highfivequiz.ui.GameScreen
+import com.skalipera.highfivequiz.ui.QuizScreen
 import com.skalipera.highfivequiz.ui.theme.HighFiveQuizTheme
 
 class MainActivity : ComponentActivity() {
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +43,12 @@ class MainActivity : ComponentActivity() {
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
+
             HighFiveQuizTheme {
-                GameScreen()
+                //GameScreen()
+                QuizScreen("Geografija", "Gde je Srbija", listOf("Evropa", "Afrika", "Azija", "Juzna Amerika"), 2, listOf(true, false, true, false),10, onAnswerSelected = {})
             }
         }
     }
