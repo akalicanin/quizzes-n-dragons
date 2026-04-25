@@ -14,10 +14,14 @@ class NearbyController(
     private val connectionsClient = Nearby.getConnectionsClient(context)
     private val serviceId = "com.skalipera.highfivequiz.P2P"
     var opponentEndpointId: String? = null
+    var opponentName: String? = null
 
     // --- CALLBACKS ---
     private val connectionLifecycleCallback = object : ConnectionLifecycleCallback() {
         override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
+            Log.d("NearbyController", "Connection initiated with $endpointId (${info.endpointName})")
+            opponentName = info.endpointName
+            
             // Stop advertising and discovery to stabilize the current connection attempt
             connectionsClient.stopAdvertising()
             connectionsClient.stopDiscovery()
@@ -27,9 +31,11 @@ class NearbyController(
 
         override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
             if (result.status.isSuccess) {
+                Log.d("NearbyController", "Connection successful!")
                 opponentEndpointId = endpointId
-                viewModel.onConnectionSuccess(endpointId)
+                viewModel.onConnectionSuccess(opponentName ?: endpointId)
             } else {
+                Log.e("NearbyController", "Connection failed: ${result.status.statusMessage}")
                 // If it failed (maybe due to the collision), restart searching
                 startPlay()
             }

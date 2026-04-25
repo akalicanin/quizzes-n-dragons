@@ -120,11 +120,12 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
         }
     }
 
-    // Prikaz poruke o uspešnom povezivanju (koristimo tvoju isMessageVisible logiku)
+    // Prikaz poruke o uspešnom povezivanju
     if (viewModel.isMessageVisible) {
-        // Ovde možeš dodati neki tvoj Custom Toast ili Box koji prikazuje viewModel.currentMessageText
-        // npr: Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_SHORT).show()
-        Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_SHORT).show()
+        LaunchedEffect(viewModel.isMessageVisible) {
+            Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_SHORT).show()
+            viewModel.dismissMessage()
+        }
     }
 
     if (showSettingsDialog) {

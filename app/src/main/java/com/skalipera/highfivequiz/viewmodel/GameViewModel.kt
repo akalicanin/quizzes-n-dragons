@@ -69,6 +69,10 @@ class GameViewModel : ViewModel() {
     var currentMessageText by mutableStateOf("Uspesno povezano!")
         private set
 
+    fun dismissMessage() {
+        isMessageVisible = false
+    }
+
     // Player data state
     var playerNickname by mutableStateOf("Barcelona")
         private set
