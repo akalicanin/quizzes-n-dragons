@@ -69,15 +69,17 @@ class GameViewModel : ViewModel() {
     )
 
     val allDragons = listOf(
-        Dragon("dragon_01", "Math", R.drawable.filler_dragon),
-        Dragon("dragon_02", "Chem", R.drawable.filler_icon),
-        Dragon("dragon_03", "Geo", R.drawable.filler_icon)
+        Dragon("dragon_01", "MathAndPhys", R.drawable.dragon_math),
+        Dragon("dragon_02", "ChemAndBio", R.drawable.dragon_science),
+        Dragon("dragon_03", "GeoAndHist", R.drawable.dragon_geohistory),
+        Dragon("dragon_04", "Hacker", R.drawable.dragon_hacker)
     )
 
     val myDragons = listOf(
-        Dragon("dragon_01", "Math", R.drawable.filler_dragon),
-        Dragon("dragon_02", "Chem", R.drawable.filler_icon),
-        Dragon("dragon_03", "Geo", R.drawable.filler_icon)
+        Dragon("dragon_01", "MathAndPhys", R.drawable.dragon_math),
+        Dragon("dragon_02", "ChemAndBio", R.drawable.dragon_science),
+        Dragon("dragon_03", "GeoAndHist", R.drawable.dragon_geohistory),
+        Dragon("dragon_04", "Hacker", R.drawable.dragon_hacker)
     )
 
     // Screen state

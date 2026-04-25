@@ -6,9 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,17 +61,22 @@ fun AmbientView(
 
         // main dragon
         Image(
-            painter = painterResource(id = R.drawable.filler_dragon), // TODO Replace with your dragon sprite
+            painter = painterResource(id = selectedDragonImage), // Replaced filler_dragon with selectedDragonImage
             contentDescription = "Your Dragon",
             modifier = Modifier
                 .align(Alignment.Center) // Put him right in the middle
-                .size(200.dp) // Make him big!
+                .size(320.dp) // Make him big!
                 .graphicsLayer {
                     // Apply the breathing animation scale to the X and Y axes
                     scaleX = breathingScale
                     scaleY = breathingScale
                 }
-                .clickable { dragonClicked() }
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null // This removes the fade/ripple effect
+                ) {
+                    dragonClicked()
+                }
         )
 
         // Play button
@@ -133,7 +140,7 @@ fun AmbientView(
             )
             Text(
                 text = rank.toString(),
-                color = Color.Black,
+                color = Color.White,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Black
             )
