@@ -8,6 +8,30 @@ import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
 
+    var isSearching by mutableStateOf(false)
+        private set
+
+    var isConnected by mutableStateOf(false)
+        private set
+
+    var opponentName by mutableStateOf<String?>(null)
+        private set
+
+    // Funkcije koje kontroler poziva da osveži UI
+    fun onSearchingStatusChanged(searching: Boolean) {
+        isSearching = searching
+    }
+
+    fun onConnectionSuccess(name: String) {
+        isConnected = true
+        isSearching = false
+        opponentName = name
+        currentMessageText = "Uspešno povezan sa: $name"
+        isMessageVisible = true
+        // Opciono: Automatski prebaci na ekran za početak kviza
+        // currentScreen = ScreenType.START_SCREEN
+    }
+
     enum class ScreenType() {
         DRAGONS,
         HOME,
