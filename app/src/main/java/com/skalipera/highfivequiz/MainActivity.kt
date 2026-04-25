@@ -1,5 +1,6 @@
 package com.skalipera.highfivequiz
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
@@ -10,6 +11,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
@@ -57,7 +59,7 @@ class MainActivity : ComponentActivity() {
         runCatching {
             adapter.enableForegroundDispatch(this, pendingIntent, nfcIntentFilters, null)
         }
-        updateOutgoingNfcMessage()
+        //updateOutgoingNfcMessage()
     }
 
     override fun onPause() {
@@ -71,15 +73,20 @@ class MainActivity : ComponentActivity() {
         handleNfcIntent(intent)
     }
 
-    fun updateOutgoingNfcMessage() {
-        val adapter = nfcAdapter ?: return
-        val payload = NfcHandshakeManager.createOutgoingPayload() ?: return
-        val dataBytes = payload.toByteArray(StandardCharsets.UTF_8)
-        val message = NdefMessage(
-            arrayOf(NdefRecord.createMime(HANDSHAKE_MIME_TYPE, dataBytes))
-        )
-        runCatching { adapter.setNdefPushMessage(message, this) }
-    }
+    //@RequiresPermission(Manifest.permission.WRITE_SECURE_SETTINGS)
+//    fun updateOutgoingNfcMessage() {
+//        val adapter = nfcAdapter ?: return
+//        val payload = NfcHandshakeManager.createOutgoingPayload() ?: return
+//        val dataBytes = payload.toByteArray(StandardCharsets.UTF_8)
+//        val message = NdefMessage(
+//            arrayOf(NdefRecord.createMime(HANDSHAKE_MIME_TYPE, dataBytes))
+//        )
+//        try {
+//            adapter.setNdefPushMessage(message, this) // Again, ensure 'this' is an Activity!
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
 
     private fun handleNfcIntent(intent: Intent?) {
         if (intent == null) return
