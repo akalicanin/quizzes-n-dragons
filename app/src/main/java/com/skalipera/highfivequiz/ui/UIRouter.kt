@@ -9,6 +9,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import com.skalipera.highfivequiz.R
 import com.skalipera.highfivequiz.ui.dialogs.ProfileDialog
 import com.skalipera.highfivequiz.ui.dialogs.SettingsDialog
 import com.skalipera.highfivequiz.viewmodel.GameViewModel
+import com.skalipera.highfivequiz.viewmodel.GameViewModel.ScreenType
 
 @Composable
 fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 1. DODAT PARAMETAR
@@ -45,7 +47,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
             // Ako su sve dozvole date, pokreni pretragu iz kontrolera
             nearbyController.startPlay()
         } else {
-            Toast.makeText(context, "Dozvole su neophodne za igru u dvoje!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Permissions are required to play!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -123,54 +125,37 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                         GameViewModel.ScreenType.QUIZ_ACTIVE -> {
                             //QuizScreen(                        )
                         }
+                        GameViewModel.ScreenType.WAITING_FOR_OPPONENT -> {
+                            WaitingForOpponentsScreen()
+                        }
                         GameViewModel.ScreenType.START_SCREEN -> {
-
+                            StartScreen()
                         }
                         GameViewModel.ScreenType.BATTLE_SCREEN -> {
-
+                            BattleScreen()
                         }
-                        GameViewModel.ScreenType.FINISH_SCREEN -> {
-
+                        GameViewModel.ScreenType.BATTLE_BUMP -> {
+                            BattleBumpScreen()
+                        }
+                        GameViewModel.ScreenType.WIN_SCREEN -> {
+                            WinScreen()
+                        }
+                        GameViewModel.ScreenType.LOSE_SCREEN -> {
+                            LoseScreen()
+                        }
+                        GameViewModel.ScreenType.DRAW_SCREEN -> {
+                            DrawScreen()
                         }
                     }
                 }
 
-//                when (viewModel.currentScreen) {
-//                    GameViewModel.ScreenType.HOME -> {
-//                        AmbientView(rank = viewModel.playerRank, dragonClicked = { })
-//                    }
-//                    GameViewModel.ScreenType.DRAGONS -> {
-//                        DragonsScreen(
-//                            "Denaprom",
-//                            "Mathematical, LEGENDARY",
-//                            "Mathematical Dragon Type from kragujevac aleksandar denovic",
-//                            5,
-//                            clickedForward = {},
-//                            clickedBackward = {}
-//                            )
-//                    }
-//                    GameViewModel.ScreenType.SHOP -> {
-//                        ShopScreen()
-//                    }
-//                    GameViewModel.ScreenType.QUIZ_ACTIVE -> {
-//                        //QuizScreen(                        )
-//                    }
-//                    GameViewModel.ScreenType.START_SCREEN -> {
-//
-//                    }
-//                    GameViewModel.ScreenType.BATTLE_SCREEN -> {
-//
-//                    }
-//                    GameViewModel.ScreenType.FINISH_SCREEN -> {
-//
-//                    }
-//                }
             }
 
             // 3. BOTTOM BAR (Always visible, but hides during a Quiz)
-            if (viewModel.currentScreen != GameViewModel.ScreenType.QUIZ_ACTIVE
-                && viewModel.currentScreen != GameViewModel.ScreenType.START_SCREEN
-                && viewModel.currentScreen != GameViewModel.ScreenType.FINISH_SCREEN) {
+            if (viewModel.currentScreen == GameViewModel.ScreenType.HOME
+                || viewModel.currentScreen == GameViewModel.ScreenType.SHOP
+                || viewModel.currentScreen == GameViewModel.ScreenType.DRAGONS
+                || viewModel.currentScreen == GameViewModel.ScreenType.DRAGON_SELECT) {
                 BottomBar(
                     currentScreen = viewModel.currentScreen,
                     onButtonClicked = { newScreen ->
@@ -195,10 +180,16 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
         SettingsDialog(onDismiss = { showSettingsDialog = false })
     }
 
-    if (showProfileDialog) {
+    if (showProfileDialog
+        && (viewModel.currentScreen == ScreenType.DRAGONS
+                || viewModel.currentScreen == ScreenType.SHOP
+                || viewModel.currentScreen == ScreenType.HOME
+                || viewModel.currentScreen == ScreenType.DRAGON_SELECT)) {
         ProfileDialog(viewModel.playerNickname,
             onSaveName = { newName -> viewModel.updateNickname(newName) },
             onDismiss = { showProfileDialog = false }
         )
+    } else {
+        showProfileDialog = false
     }
 }

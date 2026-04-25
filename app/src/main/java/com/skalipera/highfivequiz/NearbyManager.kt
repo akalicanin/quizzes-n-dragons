@@ -38,7 +38,12 @@ class NearbyController(
             if (result.status.isSuccess) {
                 Log.d("NearbyController", "Connection successful!")
                 opponentEndpointId = endpointId
-                viewModel.onConnectionSuccess(opponentName ?: endpointId)
+
+                val remoteId = opponentName?.substringAfter("|", "0") ?: "0"
+                val isHost = viewModel.myNearbyId < remoteId
+
+                viewModel.onConnectionSuccess(opponentName?.substringBefore("|") ?: endpointId, isHost)
+
             } else {
                 Log.e("NearbyController", "Connection failed: ${result.status.statusMessage}")
                 // Clear state so we can try again
@@ -85,10 +90,18 @@ class NearbyController(
     }
 
     private val payloadCallback = object : PayloadCallback() {
-        override fun onPayloadReceived(endpointId: String, payload: Payload) {}
+        override fun onPayloadReceived(endpointId: String, payload: Payload)
+        {
+
+        }
         override fun onPayloadTransferUpdate(endpointId: String, update: PayloadTransferUpdate) {}
     }
 
+    fun sendData(jsonPayload: String) {
+        opponentEndpointId?.let { endpoint ->
+            connectionsClient.sendPayload(endpoint, Payload.fromBytes(jsonPayload.toByteArray()))
+        }
+    }
     // --- FUNKCIJE ---
     fun startPlay() {
         if (isConnecting) return
