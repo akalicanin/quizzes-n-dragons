@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity() {
         val message = NdefMessage(
             arrayOf(NdefRecord.createMime(HANDSHAKE_MIME_TYPE, dataBytes))
         )
-        runCatching { adapter.setNdefPushMessage(message, this) }
+        //runCatching { adapter.setNdefPushMessage(message, this) }
     }
 
     private fun handleNfcIntent(intent: Intent?) {
