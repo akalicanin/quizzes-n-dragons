@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.skalipera.highfivequiz.data.nfc.HANDSHAKE_MIME_TYPE
 import com.skalipera.highfivequiz.data.nfc.NfcHandshakeManager
+import com.skalipera.highfivequiz.data.nfc.NfcTouchManager
 import com.skalipera.highfivequiz.ui.navigation.HighFiveQuizApp
 import com.skalipera.highfivequiz.ui.theme.HighFiveQuizTheme
 import java.nio.charset.StandardCharsets
@@ -109,6 +110,7 @@ class MainActivity : ComponentActivity() {
         ) {
             return
         }
+        NfcTouchManager.recordTouch(intent.action.orEmpty())
         val rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES) ?: return
         rawMessages
             .mapNotNull { it as? NdefMessage }

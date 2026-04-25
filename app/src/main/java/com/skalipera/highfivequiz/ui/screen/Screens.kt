@@ -35,8 +35,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.skalipera.highfivequiz.MainActivity
+import com.skalipera.highfivequiz.data.nearby.NearbyBattleManager
 import com.skalipera.highfivequiz.data.nfc.NfcBattleRole
 import com.skalipera.highfivequiz.data.nfc.NfcHandshakeManager
+import com.skalipera.highfivequiz.data.nfc.NfcTouchManager
 
 @Composable
 private fun PlaceholderScreen(title: String, onContinue: (() -> Unit)? = null) {
@@ -316,10 +318,17 @@ fun NfcLobbyScreen(
 ) {
     val context = LocalContext.current
     val nfcState by NfcHandshakeManager.state.collectAsState()
+    val nearbyState by NearbyBattleManager.state.collectAsState()
 
     LaunchedEffect(role, playerName) {
         NfcHandshakeManager.startSession(role = role, playerName = playerName)
         (context as? MainActivity)?.updateOutgoingNfcMessage()
+    }
+
+    LaunchedEffect(nfcState.opponentPlayerName, role, playerName) {
+        if (!nfcState.opponentPlayerName.isNullOrBlank()) {
+            NearbyBattleManager.startSession(context = context, role = role, playerName = playerName)
+        }
     }
 
     Column(
@@ -348,6 +357,12 @@ fun NfcLobbyScreen(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = nearbyState.status)
+            nearbyState.lastError?.let {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Nearby error: $it", color = MaterialTheme.colorScheme.error)
+            }
             Spacer(modifier = Modifier.height(12.dp))
             Button(onClick = onContinue) {
                 Text("Continue to trivia")
@@ -370,7 +385,63 @@ fun WaitingScreen(onContinue: () -> Unit) = PlaceholderScreen("Waiting For Oppon
 fun DragonAttackSelectionScreen(onContinue: () -> Unit) = PlaceholderScreen("Dragon Attack Selection", onContinue)
 
 @Composable
-fun NfcClashScreen(onContinue: () -> Unit) = PlaceholderScreen("NFC Clash (Tap 2)", onContinue)
+fun NfcClashScreen(onContinue: () -> Unit) {
+    val nearbyState by NearbyBattleManager.state.collectAsState()
+    val touchState by NfcTouchManager.state.collectAsState()
+    var pendingAttack by remember { mutableStateOf<Int?>(null) }
+    var localStatus by remember { mutableStateOf("Tap 'Queue attack' then physically touch phones.") }
+
+    LaunchedEffect(touchState.eventId, pendingAttack, nearbyState.connectedEndpointId) {
+        val attack = pendingAttack ?: return@LaunchedEffect
+        if (nearbyState.connectedEndpointId == null) return@LaunchedEffect
+        NearbyBattleManager.sendAttack(attackValue = attack)
+        pendingAttack = null
+        localStatus = "Touch detected. Attack sent over Nearby."
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "NFC Clash (Tap 2)",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(text = nearbyState.status)
+        nearbyState.connectedPlayerName?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Connected to: $it")
+        }
+        nearbyState.lastError?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Nearby error: $it", color = MaterialTheme.colorScheme.error)
+        }
+        nearbyState.lastReceivedAttack?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Incoming attack: ${it.attackValue}")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = localStatus)
+        Spacer(modifier = Modifier.height(12.dp))
+        Button(
+            onClick = {
+                pendingAttack = 10
+                localStatus = "Attack queued. Now touch phones to execute."
+            },
+            enabled = nearbyState.connectedEndpointId != null
+        ) {
+            Text("Queue attack (10)")
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Button(onClick = onContinue) {
+            Text("Continue")
+        }
+    }
+}
 
 @Composable
 fun RoundResultScreen(onContinue: () -> Unit) = PlaceholderScreen("Round / Match Result", onContinue)
