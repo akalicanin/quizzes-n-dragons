@@ -48,14 +48,14 @@ fun DragonsScreen(
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(currentDragonID.toString(), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Normal)
-                Text(currentDragonName, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(currentDragonID.toString(), modifier = Modifier.padding(horizontal = 20.dp), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Normal)
+                Text(currentDragonName, color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
             }
 
-            Text(currentDragonType, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(currentDragonType, modifier = Modifier.padding(vertical = 10.dp), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(currentDragonDesc, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Normal)

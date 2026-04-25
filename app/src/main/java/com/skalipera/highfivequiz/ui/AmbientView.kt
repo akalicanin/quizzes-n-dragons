@@ -24,8 +24,10 @@ import com.skalipera.highfivequiz.R
 @Composable
 fun AmbientView(
     rank: Int,
+    selectedDragonImage: Int,
     dragonClicked: () -> Unit,
     startMatching: () -> Unit,
+    openDragonSelection: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -79,23 +81,40 @@ fun AmbientView(
 //                .padding(vertical = 10.dp)
 //                .clickable { startMatching() }
 //        )
-        Box(
+        Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 64.dp) // Pushes it up away from the bottom bar!
-                .size(width = 220.dp, height = 70.dp) // Giant rectangle size
-                .clip(CutCornerShape(16.dp)) // THIS GIVES IT THE ANGLED GAMER EDGES!
-                .background(Color(0xFF4CAF50)) // A nice bright green, or use your own color
-                .clickable { startMatching() },
-            contentAlignment = Alignment.Center // Centers the text inside the button
+                .padding(bottom = 64.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "PLAY",
-                color = Color.Black,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Black,
-                letterSpacing = 4.sp // Spaces the letters out for a dramatic effect
-            )
+            // play button
+            Box(
+                modifier = Modifier
+                    .size(width = 180.dp, height = 70.dp)
+                    .clip(CutCornerShape(16.dp))
+                    .background(Color(0xFF4CAF50))
+                    .clickable { startMatching() },
+                contentAlignment = Alignment.Center
+            ) {
+                Text("PLAY", color = Color.Black, fontSize = 28.sp, fontWeight = FontWeight.Black)
+            }
+
+            // dragon selection box
+            Box(
+                modifier = Modifier
+                    .size(70.dp)
+                    .clip(CutCornerShape(12.dp))
+                    .background(Color(0xFF333333))
+                    .clickable { openDragonSelection() },
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = selectedDragonImage),
+                    contentDescription = "Selected Dragon",
+                    modifier = Modifier.padding(8.dp).fillMaxSize()
+                )
+            }
         }
 
         // rank HUD

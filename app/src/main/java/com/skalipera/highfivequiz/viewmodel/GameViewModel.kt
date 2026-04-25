@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.skalipera.highfivequiz.R
 
 class GameViewModel : ViewModel() {
 
@@ -12,6 +13,7 @@ class GameViewModel : ViewModel() {
         DRAGONS,
         HOME,
         SHOP,
+        DRAGON_SELECT,
         QUIZ_ACTIVE,
         BATTLE_SCREEN,
         START_SCREEN,
@@ -35,6 +37,25 @@ class GameViewModel : ViewModel() {
         val correctAnswer : Int
     )
 
+    // DRAGON DATA
+    data class Dragon(
+        val id: String,
+        val name: String,
+        val imageResId: Int // The R.drawable ID for its image
+    )
+
+    val allDragons = listOf(
+        Dragon("dragon_01", "Math", R.drawable.filler_dragon),
+        Dragon("dragon_02", "Chem", R.drawable.filler_icon),
+        Dragon("dragon_03", "Geo", R.drawable.filler_icon)
+    )
+
+    val myDragons = listOf(
+        Dragon("dragon_01", "Math", R.drawable.filler_dragon),
+        Dragon("dragon_02", "Chem", R.drawable.filler_icon),
+        Dragon("dragon_03", "Geo", R.drawable.filler_icon)
+    )
+
     // Screen state
     var currentScreen by mutableStateOf(ScreenType.HOME)
         private set
@@ -52,6 +73,14 @@ class GameViewModel : ViewModel() {
         private set
     var playerCoinAmount by mutableStateOf(0)
         private set
+    var selectedDragon by mutableStateOf(myDragons[0])
+        private set
+
+    // 3. A function to change the dragon and go back to the home screen
+    fun equipDragon(dragon: Dragon) {
+        selectedDragon = dragon
+        currentScreen = ScreenType.HOME // Instantly go back to home screen!
+    }
 
     // functions called from UI
     fun navigateTo(screen: ScreenType) {

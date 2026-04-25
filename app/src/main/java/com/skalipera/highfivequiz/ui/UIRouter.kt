@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.skalipera.highfivequiz.R
 import com.skalipera.highfivequiz.ui.dialogs.ProfileDialog
 import com.skalipera.highfivequiz.ui.dialogs.SettingsDialog
 import com.skalipera.highfivequiz.viewmodel.GameViewModel
@@ -59,7 +60,15 @@ fun UIRouter(viewModel: GameViewModel) {
                 ) { screenToDraw ->
                     when (screenToDraw) {
                         GameViewModel.ScreenType.HOME -> {
-                            AmbientView(rank = viewModel.playerRank, startMatching = {}, dragonClicked = { })
+                            AmbientView(
+                                rank = viewModel.playerRank,
+                                viewModel.selectedDragon.imageResId,
+                                startMatching = {},
+                                dragonClicked = {},
+                                openDragonSelection = {
+                                    viewModel.navigateTo(GameViewModel.ScreenType.DRAGON_SELECT)
+                                }
+                                )
                         }
                         GameViewModel.ScreenType.DRAGONS -> {
                             DragonsScreen(
@@ -73,6 +82,14 @@ fun UIRouter(viewModel: GameViewModel) {
                         }
                         GameViewModel.ScreenType.SHOP -> {
                             ShopScreen()
+                        }
+                        GameViewModel.ScreenType.DRAGON_SELECT -> {
+                            DragonSelectScreen(
+                                dragons = viewModel.myDragons,
+                                onDragonSelected = { chosenDragon ->
+                                    viewModel.equipDragon(chosenDragon) // Tells ViewModel to save and go back!
+                                }
+                            )
                         }
                         GameViewModel.ScreenType.QUIZ_ACTIVE -> {
                             //QuizScreen(                        )
