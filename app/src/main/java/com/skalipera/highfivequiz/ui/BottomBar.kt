@@ -16,9 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skalipera.highfivequiz.R
+import com.skalipera.highfivequiz.viewmodel.GameViewModel
+import com.skalipera.highfivequiz.viewmodel.GameViewModel.ScreenType
 
 @Composable
-fun BottomBar(onButtonClicked: (String) -> Unit) {
+fun BottomBar(currentScreen : GameViewModel.ScreenType,
+              onButtonClicked: (GameViewModel.ScreenType) -> Unit
+) {
 
     val barHeight = 100
 
@@ -35,26 +39,47 @@ fun BottomBar(onButtonClicked: (String) -> Unit) {
         {
             Row()
             {
+
+                var dragonsIcon = if (currentScreen == ScreenType.DRAGONS) {
+                    R.drawable.filler_icon // TODO: ACTIVE icon
+                } else {
+                    R.drawable.filler_icon // INACTIVE / regular icon
+                }
+
                 Image(
-                    painterResource(id = R.drawable.filler_icon),
+                    painterResource(id = dragonsIcon),
                     contentDescription = null,
-                    modifier = Modifier.clickable(onClick = {onButtonClicked("Dugme 1!")})
+                    modifier = Modifier.clickable(onClick = {onButtonClicked(GameViewModel.ScreenType.DRAGONS)})
                 )
             }
 
             Row()
             {
+
+                var shopIcon = if (currentScreen == ScreenType.SHOP) {
+                    R.drawable.filler_icon // TODO: ACTIVE icon
+                } else {
+                    R.drawable.filler_icon // INACTIVE / regular icon
+                }
+
                 Image(
-                    painterResource(id = R.drawable.filler_icon),
+                    painterResource(id = shopIcon),
                     contentDescription = null,
-                    modifier = Modifier.clickable(onClick = {onButtonClicked("Dugme 2!")})
+                    modifier = Modifier.clickable(onClick = {onButtonClicked(GameViewModel.ScreenType.SHOP)})
                 )
             }
         }
+
+        var homeIcon = if (currentScreen == ScreenType.HOME) {
+            R.drawable.ic_launcher_foreground // TODO: ACTIVE icon
+        } else {
+            R.drawable.ic_launcher_foreground // INACTIVE / regular icon
+        }
+
         Image(
-            painterResource(id = R.drawable.ic_launcher_foreground),
+            painterResource(id = homeIcon),
             contentDescription = null,
-            modifier = Modifier.clickable(onClick = {onButtonClicked("Dugme PLAY!")})
+            modifier = Modifier.clickable(onClick = {onButtonClicked(GameViewModel.ScreenType.HOME)})
         )
     }
 }

@@ -12,7 +12,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.skalipera.highfivequiz.ui.dialogs.ProfileDialog
+import com.skalipera.highfivequiz.ui.dialogs.SettingsDialog
 import com.skalipera.highfivequiz.ui.utility.TimedMessage
+import com.skalipera.highfivequiz.viewmodel.GameViewModel
 
 @Composable
 fun GameScreen() {
@@ -26,21 +29,25 @@ fun GameScreen() {
     var playerRank by remember { mutableStateOf(1420) }
     var playerCoinAmount by remember { mutableStateOf(450) }
 
-    // THE ROOT BOX: Allows us to layer the notification over the game
+    // Dialogs
+    var showSettingsDialog by remember { mutableStateOf(false) }
+    var showProfileDialog by remember { mutableStateOf(false) }
+
+
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // LAYER 1: The Main Game UI (Flows top to bottom)
+        //Main UI column
         Column(modifier = Modifier.fillMaxSize()) {
 
             // Top Bar
             TopBar(
                 nickname = playerNickname,
                 coinAmount = playerCoinAmount,
-                settingsClicked = { /* TODO */ },
-                profileClicked = { /* TODO */ }
+                settingsClicked = { showSettingsDialog = true },
+                profileClicked = { showProfileDialog = true }
             )
 
-            // Middle: Ambient View (Uses weight to fill all remaining space!)
+            // Game backgroound with dragon
             AmbientView(
                 rank = playerRank,
                 dragonClicked = {
@@ -52,18 +59,28 @@ fun GameScreen() {
 
             // Bottom Bar
             BottomBar(
-                onButtonClicked = { incomingMessage ->
-                    currentMessageText = incomingMessage
-                    isMessageVisible = true
+                GameViewModel.ScreenType.START_SCREEN,
+                onButtonClicked = {
                 }
             )
         }
 
-        // LAYER 2: The Floating Notification (Drawn AFTER the Column, so it sits on top)
+        if (showSettingsDialog) {
+            SettingsDialog(onDismiss =  {showSettingsDialog = false})
+        }
+
+        if (showProfileDialog) {
+            ProfileDialog(playerNickname,
+                onSaveName = {newName -> playerNickname = newName},
+                onDismiss = {showProfileDialog = false}
+            )
+        }
+
+        //Floating notification
         Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 80.dp) // Pushes it just below the TopBar
+                .padding(top = 80.dp)
         ) {
             TimedMessage(
                 msg = currentMessageText,

@@ -22,10 +22,10 @@ import com.skalipera.highfivequiz.R
 fun AmbientView(
     rank: Int,
     dragonClicked: () -> Unit,
-    modifier: Modifier = Modifier // Good practice to allow the parent to pass layout rules
+    modifier: Modifier = Modifier
 ) {
-    // --- 1. The Breathing Animation Setup ---
-    // This creates an animation loop that runs forever
+
+    // for breathing animation
     val infiniteTransition = rememberInfiniteTransition(label = "breathing")
 
     // We animate a float from 1.0 (normal size) to 1.05 (slightly bigger) and back
@@ -39,13 +39,11 @@ fun AmbientView(
         label = "dragon_scale"
     )
 
-    // --- 2. The Layout ---
-    // A Box lets us stack things: Background -> Dragon -> UI Text
     Box(
         modifier = modifier.fillMaxSize() // Fill whatever space is left between Top/Bottom bars
     ) {
 
-        // LAYER 1: The Background Image
+        // background Image
         Image(
             painter = painterResource(id = R.drawable.filler_background), // Replace with dungeon/forest background
             contentDescription = "Ambient Background",
@@ -53,7 +51,7 @@ fun AmbientView(
             modifier = Modifier.fillMaxSize()
         )
 
-        // LAYER 2: The Breathing Dragon
+        // main dragon
         Image(
             painter = painterResource(id = R.drawable.filler_dragon), // TODO Replace with your dragon sprite
             contentDescription = "Your Dragon",
@@ -68,8 +66,7 @@ fun AmbientView(
                 .clickable { dragonClicked() }
         )
 
-        // LAYER 3: The Rank HUD (Heads Up Display)
-        // We use a Column to stack the word "RANK" on top of the actual number
+        // rank HUD
         Column(
             modifier = Modifier
                 .align(Alignment.TopStart) // Float this in the top left corner of the ambient view
