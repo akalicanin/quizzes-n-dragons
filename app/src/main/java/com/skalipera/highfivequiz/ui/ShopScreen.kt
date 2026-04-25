@@ -21,6 +21,6 @@ fun ShopScreen() {
         verticalArrangement = Arrangement.Center
     )
     {
-        Text("COMING SOON!", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Normal)
+        Text("SHOP COMING SOON!", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Normal)
     }
 }

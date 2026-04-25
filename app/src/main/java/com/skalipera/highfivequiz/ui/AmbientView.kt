@@ -2,13 +2,16 @@ package com.skalipera.highfivequiz.ui
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -22,6 +25,7 @@ import com.skalipera.highfivequiz.R
 fun AmbientView(
     rank: Int,
     dragonClicked: () -> Unit,
+    startMatching: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -65,6 +69,34 @@ fun AmbientView(
                 }
                 .clickable { dragonClicked() }
         )
+
+        // Play button
+//        Image(
+//            painter = painterResource(id = R.drawable.filler_icon), // TODO Replace with play icon
+//            contentDescription = "Play button",
+//            modifier = Modifier
+//                .align(Alignment.BottomCenter) // Put him right in the middle
+//                .padding(vertical = 10.dp)
+//                .clickable { startMatching() }
+//        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 64.dp) // Pushes it up away from the bottom bar!
+                .size(width = 220.dp, height = 70.dp) // Giant rectangle size
+                .clip(CutCornerShape(16.dp)) // THIS GIVES IT THE ANGLED GAMER EDGES!
+                .background(Color(0xFF4CAF50)) // A nice bright green, or use your own color
+                .clickable { startMatching() },
+            contentAlignment = Alignment.Center // Centers the text inside the button
+        ) {
+            Text(
+                text = "PLAY",
+                color = Color.Black,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 4.sp // Spaces the letters out for a dramatic effect
+            )
+        }
 
         // rank HUD
         Column(
