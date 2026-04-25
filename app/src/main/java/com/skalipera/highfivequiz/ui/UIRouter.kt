@@ -1,8 +1,10 @@
 package com.skalipera.highfivequiz.ui
 
+import android.Manifest
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -18,17 +20,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import com.skalipera.highfivequiz.NearbyController
 import com.skalipera.highfivequiz.R
 import com.skalipera.highfivequiz.ui.dialogs.ProfileDialog
 import com.skalipera.highfivequiz.ui.dialogs.SettingsDialog
 import com.skalipera.highfivequiz.viewmodel.GameViewModel
 
 @Composable
-fun UIRouter(viewModel: GameViewModel) {
+fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 1. DODAT PARAMETAR
 
-    // Dialogs
-    var showSettingsDialog by remember {mutableStateOf(false)}
-    var showProfileDialog by remember {mutableStateOf(false)}
+    val context = LocalContext.current
+    var showSettingsDialog by remember { mutableStateOf(false) }
+    var showProfileDialog by remember { mutableStateOf(false) }
+
+    // 2. LAUNCHER ZA DOZVOLE
+    // Ovo se pokreće kada korisnik klikne na Play dugme
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.values.all { it }
+        if (allGranted) {
+            // Ako su sve dozvole date, pokreni pretragu iz kontrolera
+            nearbyController.startPlay()
+        } else {
+            Toast.makeText(context, "Dozvole su neophodne za igru u dvoje!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray)) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -63,7 +81,17 @@ fun UIRouter(viewModel: GameViewModel) {
                             AmbientView(
                                 rank = viewModel.playerRank,
                                 viewModel.selectedDragon.imageResId,
-                                startMatching = {},
+                                startMatching = {
+                                    // Kada klikne Play, prvo proveravamo dozvole
+                                    permissionLauncher.launch(arrayOf(
+                                        Manifest.permission.BLUETOOTH_SCAN,
+                                        Manifest.permission.BLUETOOTH_ADVERTISE,
+                                        Manifest.permission.BLUETOOTH_CONNECT,
+                                        Manifest.permission.ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                                        Manifest.permission.NEARBY_WIFI_DEVICES
+                                    ))
+                                },
                                 dragonClicked = {},
                                 openDragonSelection = {
                                     viewModel.navigateTo(GameViewModel.ScreenType.DRAGON_SELECT)
@@ -152,14 +180,24 @@ fun UIRouter(viewModel: GameViewModel) {
         }
     }
 
+    // Prikaz poruke o uspešnom povezivanju
+    if (viewModel.isMessageVisible) {
+        LaunchedEffect(viewModel.isMessageVisible) {
+            android.util.Log.d("UIRouter", "Showing success toast: ${viewModel.currentMessageText}")
+            Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_LONG).show()
+            kotlinx.coroutines.delay(1000) // Give it time to display before resetting state
+            viewModel.dismissMessage()
+        }
+    }
+
     if (showSettingsDialog) {
-        SettingsDialog(onDismiss =  {showSettingsDialog = false})
+        SettingsDialog(onDismiss = { showSettingsDialog = false })
     }
 
     if (showProfileDialog) {
         ProfileDialog(viewModel.playerNickname,
-            onSaveName = {newName -> viewModel.updateNickname(newName)},
-            onDismiss = {showProfileDialog = false}
+            onSaveName = { newName -> viewModel.updateNickname(newName) },
+            onDismiss = { showProfileDialog = false }
         )
     }
 }

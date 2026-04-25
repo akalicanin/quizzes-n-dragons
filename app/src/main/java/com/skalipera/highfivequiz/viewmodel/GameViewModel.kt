@@ -9,6 +9,30 @@ import com.skalipera.highfivequiz.R
 
 class GameViewModel : ViewModel() {
 
+    var isSearching by mutableStateOf(false)
+        private set
+
+    var isConnected by mutableStateOf(false)
+        private set
+
+    var opponentName by mutableStateOf<String?>(null)
+        private set
+
+    // Funkcije koje kontroler poziva da osveži UI
+    fun onSearchingStatusChanged(searching: Boolean) {
+        isSearching = searching
+    }
+
+    fun onConnectionSuccess(name: String) {
+        isConnected = true
+        isSearching = false
+        opponentName = name
+        currentMessageText = "Uspešno povezan sa: $name"
+        isMessageVisible = true
+        // Automatski prebaci na ekran za početak kviza
+        currentScreen = ScreenType.START_SCREEN
+    }
+
     enum class ScreenType() {
         DRAGONS,
         HOME,
@@ -63,10 +87,15 @@ class GameViewModel : ViewModel() {
     // Notification message state
     var isMessageVisible by mutableStateOf(false)
         private set
-    var currentMessageText by mutableStateOf("")
+    var currentMessageText by mutableStateOf("Uspesno povezano!")
         private set
 
+    fun dismissMessage() {
+        isMessageVisible = false
+    }
+
     // Player data state
+    val myNearbyId = (1000..9999).random().toString() // Unique ID for this session
     var playerNickname by mutableStateOf("Barcelona")
         private set
     var playerRank by mutableStateOf(0)
