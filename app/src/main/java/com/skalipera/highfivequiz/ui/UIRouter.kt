@@ -124,6 +124,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
     if (viewModel.isMessageVisible) {
         // Ovde možeš dodati neki tvoj Custom Toast ili Box koji prikazuje viewModel.currentMessageText
         // npr: Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, viewModel.currentMessageText, Toast.LENGTH_SHORT).show()
     }
 
     if (showSettingsDialog) {
