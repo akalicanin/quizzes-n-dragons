@@ -7,6 +7,7 @@ import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,6 +21,10 @@ import com.skalipera.highfivequiz.ui.theme.HighFiveQuizTheme
 import java.nio.charset.StandardCharsets
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        private const val TAG: String = "MainActivityNfc"
+    }
+
     private val nfcAdapter: NfcAdapter? by lazy { NfcAdapter.getDefaultAdapter(this) }
     private val nfcIntentFilters: Array<IntentFilter> by lazy {
         arrayOf(
@@ -90,6 +95,8 @@ class MainActivity : ComponentActivity() {
                 Array<android.app.Activity>::class.java
             )
             method.invoke(adapter, message, this, emptyArray<android.app.Activity>())
+        }.onFailure { throwable ->
+            Log.w(TAG, "Legacy NFC push message API is unavailable or failed", throwable)
         }
     }
 
