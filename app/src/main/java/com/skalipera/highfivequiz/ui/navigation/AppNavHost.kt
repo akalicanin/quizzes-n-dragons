@@ -1,10 +1,14 @@
 package com.skalipera.highfivequiz.ui.navigation
 
 import androidx.compose.runtime.Composable
+import android.net.Uri
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.skalipera.highfivequiz.data.nfc.NfcBattleRole
 import com.skalipera.highfivequiz.ui.screen.BanCategoryScreen
 import com.skalipera.highfivequiz.ui.screen.DragonAttackSelectionScreen
 import com.skalipera.highfivequiz.ui.screen.DragonCollectionScreen
@@ -27,7 +31,19 @@ fun HighFiveQuizApp(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         composable(AppDestinations.MAIN_MENU) {
-            MainMenuScreen { navController.navigate(AppDestinations.DRAGON_COLLECTION) }
+            MainMenuScreen(
+                onOpenDragons = { navController.navigate(AppDestinations.DRAGON_COLLECTION) },
+                onStartHostBattle = { playerName ->
+                    navController.navigate(
+                        AppDestinations.nfcLobby(NfcBattleRole.HOST.name, Uri.encode(playerName))
+                    )
+                },
+                onStartClientBattle = { playerName ->
+                    navController.navigate(
+                        AppDestinations.nfcLobby(NfcBattleRole.CLIENT.name, Uri.encode(playerName))
+                    )
+                }
+            )
         }
         composable(AppDestinations.DRAGON_COLLECTION) {
             DragonCollectionScreen { navController.navigate(AppDestinations.LOADOUT_BUILDER) }
@@ -36,10 +52,25 @@ fun HighFiveQuizApp(modifier: Modifier = Modifier) {
             LoadoutBuilderScreen { navController.navigate(AppDestinations.BAN_CATEGORY) }
         }
         composable(AppDestinations.BAN_CATEGORY) {
-            BanCategoryScreen { navController.navigate(AppDestinations.NFC_LOBBY) }
+            BanCategoryScreen {
+                navController.navigate(AppDestinations.nfcLobby(NfcBattleRole.HOST.name, "Player"))
+            }
         }
-        composable(AppDestinations.NFC_LOBBY) {
-            NfcLobbyScreen { navController.navigate(AppDestinations.TRIVIA_ROUND) }
+        composable(
+            route = AppDestinations.NFC_LOBBY_ROUTE,
+            arguments = listOf(
+                navArgument("role") { type = NavType.StringType },
+                navArgument("playerName") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val rawRole = backStackEntry.arguments?.getString("role").orEmpty()
+            val role = runCatching { NfcBattleRole.valueOf(rawRole) }.getOrDefault(NfcBattleRole.HOST)
+            val playerName = backStackEntry.arguments?.getString("playerName").orEmpty()
+            NfcLobbyScreen(
+                role = role,
+                playerName = playerName,
+                onContinue = { navController.navigate(AppDestinations.TRIVIA_ROUND) }
+            )
         }
         composable(AppDestinations.TRIVIA_ROUND) {
             TriviaRoundScreen { navController.navigate(AppDestinations.WAITING) }

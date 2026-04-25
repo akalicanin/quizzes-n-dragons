@@ -22,15 +22,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.skalipera.highfivequiz.MainActivity
+import com.skalipera.highfivequiz.data.nfc.NfcBattleRole
+import com.skalipera.highfivequiz.data.nfc.NfcHandshakeManager
 
 @Composable
 private fun PlaceholderScreen(title: String, onContinue: (() -> Unit)? = null) {
@@ -49,7 +55,11 @@ private fun PlaceholderScreen(title: String, onContinue: (() -> Unit)? = null) {
 }
 
 @Composable
-fun MainMenuScreen(onContinue: () -> Unit) {
+fun MainMenuScreen(
+    onOpenDragons: () -> Unit,
+    onStartHostBattle: (String) -> Unit,
+    onStartClientBattle: (String) -> Unit
+) {
     var menuExpanded by remember { mutableStateOf(false) }
     var showNameDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
@@ -180,7 +190,7 @@ fun MainMenuScreen(onContinue: () -> Unit) {
                             }
                         }
                         1 -> Text("Shop coming soon")
-                        2 -> Button(onClick = onContinue) { Text("Open your dragons") }
+                        2 -> Button(onClick = onOpenDragons) { Text("Open your dragons") }
                     }
                 }
 
@@ -240,14 +250,14 @@ fun MainMenuScreen(onContinue: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             showBattleDialog = false
-                            onContinue()
+                            onStartHostBattle(playerName)
                         }
                     ) { Text("Start battle HOST (NFC)") }
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             showBattleDialog = false
-                            onContinue()
+                            onStartClientBattle(playerName)
                         }
                     ) { Text("Start battle CLIENT (NFC)") }
                     Button(
@@ -299,7 +309,56 @@ fun LoadoutBuilderScreen(onContinue: () -> Unit) = PlaceholderScreen("Deck / Loa
 fun BanCategoryScreen(onContinue: () -> Unit) = PlaceholderScreen("Ban Category Selection", onContinue)
 
 @Composable
-fun NfcLobbyScreen(onContinue: () -> Unit) = PlaceholderScreen("NFC Lobby (Tap 1)", onContinue)
+fun NfcLobbyScreen(
+    role: NfcBattleRole,
+    playerName: String,
+    onContinue: () -> Unit
+) {
+    val context = LocalContext.current
+    val nfcState by NfcHandshakeManager.state.collectAsState()
+
+    LaunchedEffect(role, playerName) {
+        NfcHandshakeManager.startSession(role = role, playerName = playerName)
+        (context as? MainActivity)?.updateOutgoingNfcMessage()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = if (role == NfcBattleRole.HOST) "NFC HOST lobby" else "NFC CLIENT lobby",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(text = "Your name: ${nfcState.localPlayerName}")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = nfcState.status)
+        nfcState.lastError?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Error: $it", color = MaterialTheme.colorScheme.error)
+        }
+        nfcState.opponentPlayerName?.let { opponentName ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Connected player: $opponentName",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(onClick = onContinue) {
+                Text("Continue to trivia")
+            }
+        }
+        if (nfcState.waitingForPeer) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text("Waiting for NFC tap...")
+        }
+    }
+}
 
 @Composable
 fun TriviaRoundScreen(onContinue: () -> Unit) = PlaceholderScreen("Trivia Round", onContinue)
