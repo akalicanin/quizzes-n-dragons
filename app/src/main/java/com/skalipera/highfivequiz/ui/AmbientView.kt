@@ -1,2 +1,94 @@
 package com.skalipera.highfivequiz.ui
 
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.skalipera.highfivequiz.R
+
+@Composable
+fun AmbientView(
+    rank: Int,
+    dragonClicked: () -> Unit,
+    modifier: Modifier = Modifier // Good practice to allow the parent to pass layout rules
+) {
+    // --- 1. The Breathing Animation Setup ---
+    // This creates an animation loop that runs forever
+    val infiniteTransition = rememberInfiniteTransition(label = "breathing")
+
+    // We animate a float from 1.0 (normal size) to 1.05 (slightly bigger) and back
+    val breathingScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "dragon_scale"
+    )
+
+    // --- 2. The Layout ---
+    // A Box lets us stack things: Background -> Dragon -> UI Text
+    Box(
+        modifier = modifier.fillMaxSize() // Fill whatever space is left between Top/Bottom bars
+    ) {
+
+        // LAYER 1: The Background Image
+        Image(
+            painter = painterResource(id = R.drawable.filler_background), // Replace with dungeon/forest background
+            contentDescription = "Ambient Background",
+            contentScale = ContentScale.Crop, // Zooms the image to perfectly fill the box without stretching
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // LAYER 2: The Breathing Dragon
+        Image(
+            painter = painterResource(id = R.drawable.filler_dragon), // TODO Replace with your dragon sprite
+            contentDescription = "Your Dragon",
+            modifier = Modifier
+                .align(Alignment.Center) // Put him right in the middle
+                .size(200.dp) // Make him big!
+                .graphicsLayer {
+                    // Apply the breathing animation scale to the X and Y axes
+                    scaleX = breathingScale
+                    scaleY = breathingScale
+                }
+                .clickable { dragonClicked() }
+        )
+
+        // LAYER 3: The Rank HUD (Heads Up Display)
+        // We use a Column to stack the word "RANK" on top of the actual number
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopStart) // Float this in the top left corner of the ambient view
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally // Center the text within this column
+        ) {
+            Text(
+                text = "RANK",
+                color = Color.LightGray,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp // Adds a cool game-like spacing between letters
+            )
+            Text(
+                text = rank.toString(),
+                color = Color.Black,
+                fontSize = 36.sp,
+                fontWeight = FontWeight.Black
+            )
+        }
+    }
+}

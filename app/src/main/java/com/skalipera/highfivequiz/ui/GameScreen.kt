@@ -1,6 +1,7 @@
 package com.skalipera.highfivequiz.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -16,37 +17,59 @@ import com.skalipera.highfivequiz.ui.utility.TimedMessage
 @Composable
 fun GameScreen() {
 
-    //notification message
+    // Notification message state
     var isMessageVisible by remember { mutableStateOf(false) }
     var currentMessageText by remember { mutableStateOf("") }
 
-    //player data
-    var playerNickname by remember {mutableStateOf("DefaultName")}
-    var playerRank by remember { mutableStateOf(0 )}
-    var playerCoinAmount by remember { mutableStateOf(0 )}
+    // Player data state
+    var playerNickname by remember { mutableStateOf("DragonSlayer") }
+    var playerRank by remember { mutableStateOf(1420) }
+    var playerCoinAmount by remember { mutableStateOf(450) }
 
+    // THE ROOT BOX: Allows us to layer the notification over the game
     Box(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.align(Alignment.TopCenter).padding(50.dp)) {
-            TimedMessage(
-                currentMessageText,
-                isMessageVisible,
-                onTimerFinished = {isMessageVisible = false}
+
+        // LAYER 1: The Main Game UI (Flows top to bottom)
+        Column(modifier = Modifier.fillMaxSize()) {
+
+            // Top Bar
+            TopBar(
+                nickname = playerNickname,
+                coinAmount = playerCoinAmount,
+                settingsClicked = { /* TODO */ },
+                profileClicked = { /* TODO */ }
+            )
+
+            // Middle: Ambient View (Uses weight to fill all remaining space!)
+            AmbientView(
+                rank = playerRank,
+                dragonClicked = {
+                    currentMessageText = "You poked your dragon!"
+                    isMessageVisible = true
+                },
+                modifier = Modifier.weight(1f)
+            )
+
+            // Bottom Bar
+            BottomBar(
+                onButtonClicked = { incomingMessage ->
+                    currentMessageText = incomingMessage
+                    isMessageVisible = true
+                }
             )
         }
 
-        Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-            BottomBar(onButtonClicked = {
-                incomingMessage -> currentMessageText = incomingMessage
-                isMessageVisible = true
-            })
-        }
-
-        Box(modifier = Modifier.align(Alignment.TopCenter)) {
-            TopBar(
-                playerNickname, playerRank, playerCoinAmount,
-                settingsClicked = {},
-                profileClicked = {}
-                )
+        // LAYER 2: The Floating Notification (Drawn AFTER the Column, so it sits on top)
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 80.dp) // Pushes it just below the TopBar
+        ) {
+            TimedMessage(
+                msg = currentMessageText,
+                isVisible = isMessageVisible,
+                onTimerFinished = { isMessageVisible = false }
+            )
         }
     }
 }

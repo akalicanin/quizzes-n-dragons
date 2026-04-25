@@ -4,124 +4,97 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.skalipera.highfivequiz.R
 
 @Composable
 fun TopBar(
-    nickname: String, rank: Int, coinAmount: Int,
+    nickname: String,
+    coinAmount: Int,
     settingsClicked: () -> Unit,
     profileClicked: () -> Unit
-           ) {
-
+) {
     val barHeight = 60
 
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.BottomCenter
-    )
-    {
-        // SLIKA I IME
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(barHeight.dp)
+            .background(Color.DarkGray)
+            // padding keeps things from touching the very edge of the phone screen
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        // LEFT SIDE: Profile Pic & Nickname
         Row(
-            modifier = Modifier.fillMaxWidth().height(barHeight.dp).background(Color.DarkGray),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        )
-        {
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.clickable { profileClicked() }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.filler_icon),
+                contentDescription = "Profile",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+            )
 
-            Row()
-            {
-                Image(
-                    painterResource(id = R.drawable.filler_icon),
-                    contentDescription = null,
-                    modifier = Modifier.clickable(onClick = {profileClicked()})
-                )
-            }
-
-            Row()
-            {
-
-                Text(
-                    nickname
-                    // TODO: namesti font i slicno
-                )
-
-            }
+            Text(
+                text = nickname,
+                color = Color.White,
+                fontSize = 18.sp
+            )
         }
 
-        // PARE, RANK I SETTINGS
+        // RIGHT SIDE: Coins & Settings
         Row(
-            modifier = Modifier.fillMaxWidth().height(barHeight.dp).background(Color.DarkGray),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        )
-        {
-            // pare
-            Row()
-            {
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp) // Gap between coins and settings
+        ) {
+
+            // The Coin Counter Group
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
                 Image(
-                    painterResource(id = R.drawable.filler_icon),
-                    contentDescription = null
+                    painter = painterResource(id = R.drawable.filler_icon),
+                    contentDescription = "Coins",
+                    modifier = Modifier.size(24.dp)
                 )
                 Text(
-                    coinAmount.toString()
-                    // TODO: namesti font i slicno
+                    text = coinAmount.toString(),
+                    color = Color.Yellow,
+                    fontSize = 18.sp
                 )
             }
 
-            // rank
-            Row()
-            {
-                Image(
-                    painterResource(id = R.drawable.filler_icon),
-                    contentDescription = null
-                )
-                Text(
-                    rank.toString()
-                    // TODO: namesti font i slicno
-                )
-            }
-
-            // settings
-            Row()
-            {
-                Button(
-                    modifier = Modifier.size(49.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White),
-                    onClick = {
-
-                    }) {
-//                    Text(text = "JB",
-//                        fontSize = 13.sp,
-//                        fontWeight = FontWeight.SemiBold,
-//                        style = TextStyle(
-//                            lineHeightStyle = LineHeightStyle(
-//                                alignment = LineHeightStyle.Alignment.Center,
-//                                trim = LineHeightStyle.Trim.Both
-//                            )
-//                        )
-//                    )
-                    Image(
-                        painterResource(id = R.drawable.filler_icon),
-                        contentDescription = null
-                    )
-                }
-            }
+            // Settings button
+            Image(
+                painter = painterResource(id = R.drawable.filler_icon), // Your settings icon
+                contentDescription = "Settings",
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable { settingsClicked() }
+            )
         }
     }
 }
