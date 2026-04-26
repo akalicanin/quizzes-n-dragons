@@ -1,5 +1,6 @@
 package com.skalipera.highfivequiz.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -155,8 +156,12 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
     fun onReadyClicked() {
         isLocalReady = true
 
+        Log.d("MULTIPLAYER", "I clicked Ready! isHost=$isHost")
+
         val readypayload = GamePayload(PayloadType.READY, "Y")
         sendNetworkMessage?.invoke(Gson().toJson(readypayload))
+
+
 
         checkIfBothReadyForGame()
     }
@@ -164,12 +169,18 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
     // Called by NearbyController when READY payload arrives
     fun onOpponentReadyReceived() {
         isOpponentReady = true
+        Log.d("MULTIPLAYER", "Received opponent's Ready payload!")
         checkIfBothReadyForGame()
     }
     private fun checkIfBothReadyForGame() {
+        Log.d("MULTIPLAYER", "Checking ready state: Local=$isLocalReady, Opponent=$isOpponentReady")
         if (isLocalReady && isOpponentReady && currentScreen == ScreenType.START_SCREEN) {
             if (isHost) {
+                Log.d("MULTIPLAYER", "Both ready AND I am Host! Generating questions...")
                 generateAndSendNextRound()
+            }
+            else {
+                Log.d("MULTIPLAYER", "Both ready, but I am Client. Waiting for questions...")
             }
         }
     }
