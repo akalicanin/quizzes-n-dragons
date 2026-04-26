@@ -95,7 +95,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                 },
                                 dragonClicked = {},
                                 openDragonSelection = {
-                                    viewModel.navigateTo(GameViewModel.ScreenType.DRAGON_SELECT)
+                                    viewModel.navigateTo(ScreenType.DRAGON_SELECT)
                                 }
                             )
                         }
@@ -126,7 +126,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                             QuizScreen(
                                 viewModel.currentQuestions.get(1).topic.toString(),
                                 viewModel.currentQuestions.get(viewModel.currentQuestionIndex).text,
-                                viewModel.currentQuestions.get(viewModel.currentQuestionIndex).answers,
+                                viewModel.currentQuestions.get(viewModel.currentQuestionIndex).answers.shuffled(),
                                 viewModel.currentQuestionIndex,
                                 viewModel.currentAnswersHistory,
                                 viewModel.timeRemaining,
@@ -215,10 +215,10 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
             }
 
             // 3. BOTTOM BAR (Always visible, but hides during a Quiz)
-            if (viewModel.currentScreen == GameViewModel.ScreenType.HOME
-                || viewModel.currentScreen == GameViewModel.ScreenType.SHOP
-                || viewModel.currentScreen == GameViewModel.ScreenType.DRAGONS
-                || viewModel.currentScreen == GameViewModel.ScreenType.DRAGON_SELECT) {
+            if (viewModel.currentScreen == ScreenType.HOME
+                || viewModel.currentScreen == ScreenType.SHOP
+                || viewModel.currentScreen == ScreenType.DRAGONS
+                || viewModel.currentScreen == ScreenType.DRAGON_SELECT) {
                 BottomBar(
                     currentScreen = viewModel.currentScreen,
                     onButtonClicked = { newScreen ->

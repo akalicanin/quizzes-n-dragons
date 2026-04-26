@@ -30,126 +30,6 @@
     "correctAnswer": 0
   },
   {
-    "topic": "SCIENCE",
-    "text": "What is the chemical symbol for Gold?",
-    "answers": ["Go", "Ag", "Au", "Gd"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "SCIENCE",
-    "text": "Which organelle is known as the powerhouse of the cell?",
-    "answers": ["Nucleus", "Mitochondria", "Ribosome", "Endoplasmic Reticulum"],
-    "correctAnswer": 1
-  },
-  {
-    "topic": "SCIENCE",
-    "text": "What gas do plants primarily absorb from the atmosphere during photosynthesis?",
-    "answers": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "SCIENCE",
-    "text": "What is the atomic number of Hydrogen?",
-    "answers": ["1", "2", "0", "10"],
-    "correctAnswer": 0
-  },
-  {
-    "topic": "SCIENCE",
-    "text": "Which human organ is primarily responsible for filtering blood and producing urine?",
-    "answers": ["Heart", "Brain", "Kidneys", "Lungs"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "HACKER",
-    "text": "What does HTML stand for?",
-    "answers": ["HyperText Markup Language", "HighText Machine Language", "HyperLoop Machine Language", "HyperText Multiple Language"],
-    "correctAnswer": 0
-  },
-  {
-    "topic": "HACKER",
-    "text": "Which company originally developed the Java programming language?",
-    "answers": ["Microsoft", "Apple", "Sun Microsystems", "Google"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "HACKER",
-    "text": "What is the main function of RAM in a computer?",
-    "answers": ["Long-term storage", "Cooling", "Processing graphics", "Short-term memory"],
-    "correctAnswer": 3
-  },
-  {
-    "topic": "HACKER",
-    "text": "What does 'HTTP' stand for in website addresses?",
-    "answers": ["HyperText Transfer Protocol", "HyperText Transmission Process", "High Transfer Text Protocol", "Hyperlink Transfer Technology"],
-    "correctAnswer": 0
-  },
-  {
-    "topic": "HACKER",
-    "text": "Which of these is NOT a programming language?",
-    "answers": ["Python", "C++", "HTML", "Java"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "POP_CULTURE",
-    "text": "Who painted the Mona Lisa?",
-    "answers": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "POP_CULTURE",
-    "text": "Which famous classical composer became completely deaf later in life?",
-    "answers": ["Mozart", "Beethoven", "Bach", "Chopin"],
-    "correctAnswer": 1
-  },
-  {
-    "topic": "POP_CULTURE",
-    "text": "The Louvre Museum is located in which city?",
-    "answers": ["London", "Rome", "Paris", "Berlin"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "POP_CULTURE",
-    "text": "Who wrote the famous tragedy 'Romeo and Juliet'?",
-    "answers": ["Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"],
-    "correctAnswer": 1
-  },
-  {
-    "topic": "POP_CULTURE",
-    "text": "Which musical instrument traditionally has 88 keys?",
-    "answers": ["Guitar", "Violin", "Piano", "Flute"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "GEOHISTORY",
-    "text": "In what year did World War II end?",
-    "answers": ["1940", "1945", "1950", "1918"],
-    "correctAnswer": 1
-  },
-  {
-    "topic": "GEOHISTORY",
-    "text": "What is the capital city of Japan?",
-    "answers": ["Beijing", "Seoul", "Tokyo", "Kyoto"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "GEOHISTORY",
-    "text": "Who was the first President of the United States?",
-    "answers": ["Abraham Lincoln", "Thomas Jefferson", "George Washington", "John Adams"],
-    "correctAnswer": 2
-  },
-  {
-    "topic": "GEOHISTORY",
-    "text": "Which is generally considered the longest river in the world?",
-    "answers": ["Amazon", "Nile", "Yangtze", "Mississippi"],
-    "correctAnswer": 1
-  },
-  {
-    "topic": "GEOHISTORY",
-    "text": "The ancient city of Rome was famously built on how many hills?",
-    "answers": ["5", "7", "9", "12"],
-    "correctAnswer": 1
-  },
-  {
     "topic": "MATH",
     "text": "What is the speed of sound in air at room temperature?",
     "answers": ["343 m/s", "150 m/s", "1,200 m/s", "500 m/s"],
@@ -180,6 +60,96 @@
     "correctAnswer": 1
   },
   {
+    "topic": "MATH",
+    "text": "What is the third derivative of position with respect to time called?",
+    "answers": ["Acceleration", "Jerk", "Snap", "Momentum"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "MATH",
+    "text": "Which mathematician finally proved Fermat's Last Theorem in 1994?",
+    "answers": ["Alan Turing", "John von Neumann", "Andrew Wiles", "Carl Friedrich Gauss"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the approximate value of the Golden Ratio (Phi)?",
+    "answers": ["1.41", "1.61", "1.73", "3.14"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "MATH",
+    "text": "In Euler's Identity (e^(i*pi) + 1 = 0), what does 'i' represent?",
+    "answers": ["Infinity", "An irrational number", "The imaginary unit", "An integer"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the name of the equation that governs the flow of viscous fluids?",
+    "answers": ["Maxwell's Equations", "Schrödinger Equation", "Navier-Stokes Equations", "Lorentz Transformations"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the sum of the interior angles of a standard triangle?",
+    "answers": ["90 degrees", "180 degrees", "270 degrees", "360 degrees"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the next prime number after 7?",
+    "answers": ["9", "11", "13", "15"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the mathematical term for the top number in a fraction?",
+    "answers": ["Denominator", "Quotient", "Numerator", "Dividend"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "MATH",
+    "text": "How many sides does a dodecagon have?",
+    "answers": ["10", "12", "14", "20"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the formula for the area of a circle?",
+    "answers": ["pi * r^2", "2 * pi * r", "length * width", "1/2 * base * height"],
+    "correctAnswer": 0
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the chemical symbol for Gold?",
+    "answers": ["Go", "Ag", "Au", "Gd"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which organelle is known as the powerhouse of the cell?",
+    "answers": ["Nucleus", "Mitochondria", "Ribosome", "Endoplasmic Reticulum"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What gas do plants primarily absorb from the atmosphere during photosynthesis?",
+    "answers": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the atomic number of Hydrogen?",
+    "answers": ["1", "2", "0", "10"],
+    "correctAnswer": 0
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which human organ is primarily responsible for filtering blood and producing urine?",
+    "answers": ["Heart", "Brain", "Kidneys", "Lungs"],
+    "correctAnswer": 2
+  },
+  {
     "topic": "SCIENCE",
     "text": "Which gas is most abundant in the Earth's atmosphere?",
     "answers": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"],
@@ -207,6 +177,96 @@
     "topic": "SCIENCE",
     "text": "What is the pH value of pure water?",
     "answers": ["0", "5", "7", "14"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which fundamental force is responsible for radioactive decay?",
+    "answers": ["Gravity", "Electromagnetism", "Strong Nuclear Force", "Weak Nuclear Force"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What metal sits at the exact center of a chlorophyll molecule?",
+    "answers": ["Iron", "Magnesium", "Copper", "Zinc"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the theoretical maximum mass of a stable white dwarf star called?",
+    "answers": ["Roche Limit", "Schwarzschild Radius", "Chandrasekhar Limit", "Hubble Boundary"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which subatomic particles combine to form protons and neutrons?",
+    "answers": ["Leptons", "Bosons", "Quarks", "Fermions"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the heaviest naturally occurring chemical element on Earth?",
+    "answers": ["Plutonium", "Uranium", "Lead", "Osmium"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which planet in our solar system is widely known as the Red Planet?",
+    "answers": ["Venus", "Jupiter", "Mars", "Saturn"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the hardest naturally occurring substance on Earth?",
+    "answers": ["Graphite", "Quartz", "Titanium", "Diamond"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "At what temperature on the Celsius scale does water typically boil?",
+    "answers": ["50", "100", "150", "200"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What type of electromagnetic radiation primarily causes human sunburns?",
+    "answers": ["Infrared", "Microwave", "Ultraviolet", "X-ray"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which blood type is known as the universal donor?",
+    "answers": ["A positive", "B negative", "AB positive", "O negative"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "HACKER",
+    "text": "What does HTML stand for?",
+    "answers": ["HyperText Markup Language", "HighText Machine Language", "HyperLoop Machine Language", "HyperText Multiple Language"],
+    "correctAnswer": 0
+  },
+  {
+    "topic": "HACKER",
+    "text": "Which company originally developed the Java programming language?",
+    "answers": ["Microsoft", "Apple", "Sun Microsystems", "Google"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "HACKER",
+    "text": "What is the main function of RAM in a computer?",
+    "answers": ["Long-term storage", "Cooling", "Processing graphics", "Short-term memory"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "HACKER",
+    "text": "What does 'HTTP' stand for in website addresses?",
+    "answers": ["HyperText Transfer Protocol", "HyperText Transmission Process", "High Transfer Text Protocol", "Hyperlink Transfer Technology"],
+    "correctAnswer": 0
+  },
+  {
+    "topic": "HACKER",
+    "text": "Which of these is NOT a programming language?",
+    "answers": ["Python", "C++", "HTML", "Java"],
     "correctAnswer": 2
   },
   {
@@ -240,6 +300,96 @@
     "correctAnswer": 1
   },
   {
+    "topic": "HACKER",
+    "text": "In cryptography, what do the letters in the 'RSA' algorithm stand for?",
+    "answers": ["Random Secure Access", "Rivest-Shamir-Adleman", "Robust Standard Algorithm", "Root Security Authentication"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "HACKER",
+    "text": "Which port does HTTPS use by default?",
+    "answers": ["80", "21", "443", "8080"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "HACKER",
+    "text": "What is the worst-case time complexity of a standard Binary Search algorithm?",
+    "answers": ["O(n)", "O(1)", "O(n^2)", "O(log n)"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "HACKER",
+    "text": "Who is the original creator of the Linux kernel?",
+    "answers": ["Richard Stallman", "Linus Torvalds", "Ken Thompson", "Dennis Ritchie"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "HACKER",
+    "text": "What was the name of the first computer virus, created in 1971?",
+    "answers": ["ILOVEYOU", "MyDoom", "Creeper", "Stuxnet"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "HACKER",
+    "text": "What does 'IP' stand for in 'IP address'?",
+    "answers": ["Internal Processor", "Internet Protocol", "Information Path", "Interconnected Port"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "HACKER",
+    "text": "Which operating system prominently features a penguin named Tux as its mascot?",
+    "answers": ["Windows", "macOS", "FreeBSD", "Linux"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "HACKER",
+    "text": "In modern computing, how many bits are contained in a standard byte?",
+    "answers": ["4", "8", "16", "32"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "HACKER",
+    "text": "What is the standard keyboard shortcut for 'Paste' on a Windows or Linux system?",
+    "answers": ["Ctrl + P", "Ctrl + C", "Ctrl + V", "Ctrl + X"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "HACKER",
+    "text": "What was the name of the first widely popular graphical web browser released in 1993?",
+    "answers": ["Internet Explorer", "Mosaic", "Opera", "Firefox"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Who painted the Mona Lisa?",
+    "answers": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which famous classical composer became completely deaf later in life?",
+    "answers": ["Mozart", "Beethoven", "Bach", "Chopin"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "The Louvre Museum is located in which city?",
+    "answers": ["London", "Rome", "Paris", "Berlin"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Who wrote the famous tragedy 'Romeo and Juliet'?",
+    "answers": ["Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which musical instrument traditionally has 88 keys?",
+    "answers": ["Guitar", "Violin", "Piano", "Flute"],
+    "correctAnswer": 2
+  },
+  {
     "topic": "POP_CULTURE",
     "text": "Which artist painted 'The Starry Night'?",
     "answers": ["Claude Monet", "Vincent van Gogh", "Salvador Dali", "Edvard Munch"],
@@ -270,6 +420,96 @@
     "correctAnswer": 3
   },
   {
+    "topic": "POP_CULTURE",
+    "text": "Which animated movie won the first-ever Academy Award for Best Animated Feature in 2002?",
+    "answers": ["Toy Story", "Shrek", "Spirited Away", "Monsters, Inc."],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "In J.R.R. Tolkien's 'The Lord of the Rings', what is the name of Frodo Baggins' glowing sword?",
+    "answers": ["Andúril", "Glamdring", "Narsil", "Sting"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which Japanese film became the highest-grossing anime movie of all time globally in 2020?",
+    "answers": ["Your Name", "Demon Slayer: Mugen Train", "Spirited Away", "Akira"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Who directed the 1994 cult classic film 'Pulp Fiction'?",
+    "answers": ["Steven Spielberg", "Martin Scorsese", "Quentin Tarantino", "David Fincher"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which actress holds the record for the most Academy Award nominations of all time?",
+    "answers": ["Katharine Hepburn", "Meryl Streep", "Bette Davis", "Cate Blanchett"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which actor played the role of Harry Potter in the film series?",
+    "answers": ["Elijah Wood", "Daniel Radcliffe", "Rupert Grint", "Tom Holland"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which hit TV show featured dragons, White Walkers, and the Iron Throne?",
+    "answers": ["The Witcher", "Vikings", "Game of Thrones", "House of the Dragon"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "In the Marvel Cinematic Universe, what is Captain America's real name?",
+    "answers": ["Tony Stark", "Bruce Banner", "Steve Rogers", "Clint Barton"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which classic video game franchise features a green-clad hero named Link?",
+    "answers": ["Final Fantasy", "The Legend of Zelda", "Super Mario", "Metroid"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "What was the name of the first full-length CGI movie released by Pixar in 1995?",
+    "answers": ["A Bug's Life", "Monsters, Inc.", "Toy Story", "Finding Nemo"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "In what year did World War II end?",
+    "answers": ["1940", "1945", "1950", "1918"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "What is the capital city of Japan?",
+    "answers": ["Beijing", "Seoul", "Tokyo", "Kyoto"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Who was the first President of the United States?",
+    "answers": ["Abraham Lincoln", "Thomas Jefferson", "George Washington", "John Adams"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Which is generally considered the longest river in the world?",
+    "answers": ["Amazon", "Nile", "Yangtze", "Mississippi"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "The ancient city of Rome was famously built on how many hills?",
+    "answers": ["5", "7", "9", "12"],
+    "correctAnswer": 1
+  },
+  {
     "topic": "GEOHISTORY",
     "text": "Which civilization built the Great Pyramid of Giza?",
     "answers": ["Ancient Greeks", "The Romans", "Ancient Egyptians", "The Aztecs"],
@@ -297,6 +537,66 @@
     "topic": "GEOHISTORY",
     "text": "In which country was the Titanic built?",
     "answers": ["England", "Northern Ireland", "USA", "Scotland"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "In 1805, British forces defeated Napoleon's combined fleets in which famous naval battle?",
+    "answers": ["Battle of Waterloo", "Battle of Trafalgar", "Battle of Hastings", "Battle of Austerlitz"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Which African nation successfully maintained its independence and was never colonized by a European power?",
+    "answers": ["Nigeria", "Kenya", "Ethiopia", "Morocco"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "What is the name of the narrow body of water that separates Russia and Alaska?",
+    "answers": ["Strait of Gibraltar", "Bering Strait", "Strait of Hormuz", "English Channel"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Who was the first Emperor of the Roman Empire?",
+    "answers": ["Julius Caesar", "Nero", "Caligula", "Augustus"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "In what year did the Byzantine Empire (Eastern Roman Empire) finally fall to the Ottomans?",
+    "answers": ["1066", "1492", "1453", "1215"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "The Cold War was primarily a geopolitical tension between the United States and which other superpower?",
+    "answers": ["Great Britain", "China", "Soviet Union", "Germany"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Which European explorer is credited with discovering the sea route to the Americas in 1492?",
+    "answers": ["Ferdinand Magellan", "Christopher Columbus", "Vasco da Gama", "Marco Polo"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "What is the largest hot desert in the world?",
+    "answers": ["Gobi Desert", "Kalahari Desert", "Sahara Desert", "Mojave Desert"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "In which country is the famous Taj Mahal located?",
+    "answers": ["Pakistan", "Bangladesh", "Iran", "India"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Who was the Prime Minister of the United Kingdom during the majority of World War II?",
+    "answers": ["Neville Chamberlain", "Winston Churchill", "Clement Attlee", "Tony Blair"],
     "correctAnswer": 1
   }
 ]
