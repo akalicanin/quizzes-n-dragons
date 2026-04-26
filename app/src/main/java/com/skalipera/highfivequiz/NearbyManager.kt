@@ -20,6 +20,7 @@ class NearbyController(
     private val gson = Gson()
     var opponentEndpointId: String? = null
     var opponentName: String? = null
+    private var remoteId: String = "0"
     private var isConnecting = false
 
     // --- CALLBACKS ---
@@ -29,8 +30,12 @@ class NearbyController(
             isConnecting = true
             
             // Extract original nickname
-            opponentName = info.endpointName.substringBefore("|")
-            
+            //opponentName = info.endpointName.substringBefore("|")
+
+            val parts = info.endpointName.split("|")
+            opponentName = parts.getOrNull(0) ?: info.endpointName
+            remoteId = parts.getOrNull(1) ?: "0" // <--- SAVE THE ID HERE
+
             // Stop everything to stabilize this connection
             connectionsClient.stopAdvertising()
             connectionsClient.stopDiscovery()
@@ -44,8 +49,9 @@ class NearbyController(
                 Log.d("NearbyController", "Connection successful!")
                 opponentEndpointId = endpointId
 
-                val remoteId = opponentName?.substringAfter("|", "0") ?: "0"
+                //val remoteId = opponentName?.substringAfter("|", "0") ?: "0"
                 val isHost = viewModel.myNearbyId < remoteId
+                Log.d("NearbyController", "Am I host? $isHost (MyID: ${viewModel.myNearbyId}, RemoteID: $remoteId)")
 
                 viewModel.onConnectionSuccess(opponentName?.substringBefore("|") ?: endpointId, isHost)
 
