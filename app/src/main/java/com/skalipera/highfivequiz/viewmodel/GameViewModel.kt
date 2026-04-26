@@ -148,6 +148,11 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
     var isOpponentRematchRequested by mutableStateOf(false)
         private set
 
+    var isLocalBumped by mutableStateOf(false)
+        private set
+    var isOpponentBumped by mutableStateOf(false)
+        private set
+
     // The Controller will listen to this lambda to send data over the network
     var sendNetworkMessage: ((String) -> Unit)? = null
 
@@ -308,6 +313,8 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         isOpponentReady = false
         isLocalRematchRequested = false
         isOpponentRematchRequested = false
+        isLocalBumped = false
+        isOpponentBumped = false
         receivedGameOver = false
         currentQuestionNumberForUI = 0
         currentAnswersHistory = MutableList(7) { false }
@@ -431,7 +438,21 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
 
     // Called when the Accelerometer detects a physical bump!
     fun onPhysicalBumpDetected() {
-        if (currentScreen == ScreenType.BATTLE_BUMP) {
+        if (currentScreen == ScreenType.BATTLE_BUMP && !isLocalBumped) {
+            isLocalBumped = true
+            val payload = GamePayload(PayloadType.BUMP, "BUMP")
+            sendNetworkMessage?.invoke(Gson().toJson(payload))
+            checkIfBothBumped()
+        }
+    }
+
+    fun onOpponentBumpReceived() {
+        isOpponentBumped = true
+        checkIfBothBumped()
+    }
+
+    private fun checkIfBothBumped() {
+        if (isLocalBumped && isOpponentBumped) {
             resolveCombat()
         }
     }
@@ -463,6 +484,10 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         }
     }
     private fun resolveCombat() {
+        // Reset bump states for the next round
+        isLocalBumped = false
+        isOpponentBumped = false
+
         navigateTo(ScreenType.BATTLE_SCREEN)
 
         // Calculate Damage (Score * 0.7)

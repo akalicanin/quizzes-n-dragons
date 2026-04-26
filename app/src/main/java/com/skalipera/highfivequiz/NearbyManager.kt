@@ -137,6 +137,9 @@ class NearbyController(
                     PayloadType.REMATCH -> {
                         viewModel.onOpponentRematchReceived()
                     }
+                    PayloadType.BUMP -> {
+                        viewModel.onOpponentBumpReceived()
+                    }
                 }
             }
         }
