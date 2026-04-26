@@ -385,6 +385,15 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         checkIfBothFinished()
     }
 
+    // Called by NetworkLayer when Host sends GAME_OVER
+    fun onGameOverReceived() {
+        if (currentScreen != ScreenType.WIN_SCREEN && 
+            currentScreen != ScreenType.LOSE_SCREEN && 
+            currentScreen != ScreenType.DRAW_SCREEN) {
+            resolveCombat()
+        }
+    }
+
     // Called when the Accelerometer detects a physical bump!
     fun onPhysicalBumpDetected() {
         if (currentScreen == ScreenType.BATTLE_BUMP) {
@@ -439,6 +448,13 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         viewModelScope.launch {
             delay(1500)
             if (myHp <= 0 || opponentHp <= 0 || pastQuestionTopics.count() == QuestionTopic.entries.count()) {
+                
+                // If I am the host, tell the client the game is over
+                if (isHost) {
+                    val payload = GamePayload(PayloadType.GAME_OVER, "END")
+                    sendNetworkMessage?.invoke(Gson().toJson(payload))
+                }
+
                 if (myHp <= 0) {
                     updateRank(playerRank-3)
                     addCoins(totalCoinsWon)
