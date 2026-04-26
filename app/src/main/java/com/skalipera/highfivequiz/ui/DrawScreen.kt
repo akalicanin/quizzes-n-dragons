@@ -2,13 +2,7 @@ package com.skalipera.highfivequiz.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,67 +15,73 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun DrawScreen(newRank : Int, onHomeClicked : () -> Unit) {
+fun DrawScreen(
+    rankWon: Int,
+    goldWon: Int,
+    onBackToMain: () -> Unit,
+    onRematch: () -> Unit
+) {
     Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.DarkGray),
+        modifier = Modifier.fillMaxSize().background(Color.DarkGray),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    )
-    {
-        Text("DRAW!", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Normal)
-        Column(
-            modifier = Modifier
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "RANK",
-                color = Color.LightGray,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            )
-            Text(
-                text = newRank.toString(),
-                color = Color.White,
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Black
-            )
-            Text(
-                text = "+15 coins",
-                color = Color.White,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Black
-            )
-        }
-        LeaveButton(
-            text = "BACK HOME",
-            color = Color(0xFFF44336),
-            onClick = onHomeClicked
-        )
-    }
-}
-
-@Composable
-fun LeaveButton(
-    text: String,
-    color: Color,
-    enabled: Boolean = true,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .size(width = 280.dp, height = 70.dp)
-            .clip(CutCornerShape(16.dp))
-            .background(color)
-            .clickable(enabled = enabled) { onClick() },
-        contentAlignment = Alignment.Center
     ) {
         Text(
-            text = text,
-            color = if (enabled) Color.White else Color.DarkGray,
-            fontSize = 20.sp,
+            "Draw!",
+            color = Color.LightGray,
+            fontSize = 48.sp,
             fontWeight = FontWeight.Black
         )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Rewards Section
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Rank Points: +$rankWon",
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Gold Earned: +$goldWon",
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(64.dp))
+
+        // Buttons
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Rematch Button
+            Box(
+                modifier = Modifier
+                    .size(width = 250.dp, height = 60.dp)
+                    .clip(CutCornerShape(12.dp))
+                    .background(Color(0xFF4CAF50))
+                    .clickable { onRematch() },
+                contentAlignment = Alignment.Center
+            ) {
+                Text("REMATCH", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
+            }
+
+            // Back to Main Button
+            Box(
+                modifier = Modifier
+                    .size(width = 250.dp, height = 60.dp)
+                    .clip(CutCornerShape(12.dp))
+                    .background(Color(0xFFF44336))
+                    .clickable { onBackToMain() },
+                contentAlignment = Alignment.Center
+            ) {
+                Text("BACK TO MAIN", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
+            }
+        }
     }
 }
