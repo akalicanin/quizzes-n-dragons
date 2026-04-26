@@ -100,13 +100,15 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                             )
                         }
                         ScreenType.DRAGONS -> {
+                            val currentDragon = viewModel.allDragons[viewModel.galleryIndex]
                             DragonsScreen(
-                                "Denaprom",
-                                "Mathematical, LEGENDARY",
-                                "Mathematical Dragon Type from kragujevac aleksandar denovic",
-                                5,
-                                clickedForward = {},
-                                clickedBackward = {}
+                                currentDragonName = currentDragon.name,
+                                currentDragonType = currentDragon.type.name,
+                                currentDragonDesc = currentDragon.description,
+                                currentDragonID = viewModel.galleryIndex + 1,
+                                currentDragonImage = currentDragon.imageResId,
+                                clickedForward = { viewModel.nextDragon() },
+                                clickedBackward = { viewModel.prevDragon() }
                             )
                         }
                         ScreenType.SHOP -> {
@@ -150,13 +152,23 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                             )
                         }
                         ScreenType.WIN_SCREEN -> {
-                            WinScreen()
+                            WinScreen(
+                                rankWon = 3, // This could be dynamic from ViewModel later
+                                goldWon = 50, // This could be dynamic from ViewModel later
+                                onBackToMain = {
+                                    nearbyController.stopAll()
+                                    viewModel.abortMultiplayer()
+                                },
+                                onRematch = {
+                                    // Logic for rematch TODO
+                                }
+                            )
                         }
                         ScreenType.LOSE_SCREEN -> {
-                            LoseScreen()
+                            //LoseScreen()
                         }
                         ScreenType.DRAW_SCREEN -> {
-                            DrawScreen()
+                            //DrawScreen()
                         }
                     }
                 }

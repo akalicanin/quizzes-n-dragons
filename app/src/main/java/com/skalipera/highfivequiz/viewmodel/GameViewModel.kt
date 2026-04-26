@@ -50,26 +50,46 @@ class GameViewModel : ViewModel() {
     data class Dragon(
         val id: String,
         val name: String,
-        val imageResId: Int, // The R.drawable ID for its image
-        val type: QuestionTopic
+        val imageResId: Int,
+        val type: QuestionTopic,
+        val description: String = "This dragon is a master of its craft, waiting for a worthy challenger."
     )
 
     val allDragons = listOf(
-        Dragon("dragon_01", "MathAndPhys", R.drawable.dragon_math, QuestionTopic.MATH),
-        Dragon("dragon_02", "ChemAndBio", R.drawable.dragon_science, QuestionTopic.SCIENCE),
-        Dragon("dragon_03", "GeoAndHist", R.drawable.dragon_geohistory, QuestionTopic.GEOHISTORY),
-        Dragon("dragon_04", "Hacker", R.drawable.dragon_hacker, QuestionTopic.HACKER),
-        Dragon("dragon_05", "Culture", R.drawable.dragon_musicandart, QuestionTopic.POP_CULTURE)
-
+        Dragon("dragon_01", "Tesladrag", R.drawable.dragon_math, QuestionTopic.MATH, "Born from the equations of ancient scholars, this dragon controls the laws of physics."),
+        Dragon("dragon_02", "Bioweapon", R.drawable.dragon_science, QuestionTopic.SCIENCE, "A biological marvel, it uses chemical reactions to breathe iridescent flames."),
+        Dragon("dragon_03", "Indiana Dragones", R.drawable.dragon_geohistory, QuestionTopic.GEOHISTORY, "It has seen the rise and fall of empires, carrying the weight of history in its scales."),
+        Dragon("dragon_04", "Mr. Robodragon", R.drawable.dragon_hacker, QuestionTopic.HACKER, "A digital phantom that lives within the code. It can manipulate any system it encounters."),
+        Dragon("dragon_05", "Joy", R.drawable.dragon_musicandart, QuestionTopic.POP_CULTURE, "Inspired by the greatest artists, its roar sounds like a symphony of pure inspiration.")
     )
 
     val myDragons = listOf(
-        Dragon("dragon_01", "MathAndPhys", R.drawable.dragon_math, QuestionTopic.MATH),
-        Dragon("dragon_02", "ChemAndBio", R.drawable.dragon_science, QuestionTopic.SCIENCE),
-        Dragon("dragon_03", "GeoAndHist", R.drawable.dragon_geohistory, QuestionTopic.GEOHISTORY),
-        Dragon("dragon_04", "Hacker", R.drawable.dragon_hacker, QuestionTopic.HACKER),
-        Dragon("dragon_05", "Culture", R.drawable.dragon_musicandart, QuestionTopic.POP_CULTURE)
+        Dragon("dragon_01", "MathAndPhys", R.drawable.dragon_math, QuestionTopic.MATH, "Born from the equations of ancient scholars, this dragon controls the laws of physics."),
+        Dragon("dragon_02", "ChemAndBio", R.drawable.dragon_science, QuestionTopic.SCIENCE, "A biological marvel, it uses chemical reactions to breathe iridescent flames."),
+        Dragon("dragon_03", "GeoAndHist", R.drawable.dragon_geohistory, QuestionTopic.GEOHISTORY, "It has seen the rise and fall of empires, carrying the weight of history in its scales."),
+        Dragon("dragon_04", "Hacker", R.drawable.dragon_hacker, QuestionTopic.HACKER, "A digital phantom that lives within the code. It can manipulate any system it encounters."),
+        Dragon("dragon_05", "Culture", R.drawable.dragon_musicandart, QuestionTopic.POP_CULTURE, "Inspired by the greatest artists, its roar sounds like a symphony of pure inspiration.")
     )
+
+    // Gallery state
+    var galleryIndex by mutableStateOf(0)
+        private set
+
+    fun nextDragon() {
+        if (galleryIndex < allDragons.size - 1) {
+            galleryIndex++
+        } else {
+            galleryIndex = 0 // Wrap around
+        }
+    }
+
+    fun prevDragon() {
+        if (galleryIndex > 0) {
+            galleryIndex--
+        } else {
+            galleryIndex = allDragons.size - 1 // Wrap around
+        }
+    }
 
     // Screen state
     var currentScreen by mutableStateOf(ScreenType.HOME)

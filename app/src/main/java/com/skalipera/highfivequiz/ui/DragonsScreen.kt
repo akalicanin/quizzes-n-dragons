@@ -28,6 +28,7 @@ fun DragonsScreen(
     currentDragonType : String,
     currentDragonDesc : String,
     currentDragonID : Int,
+    currentDragonImage: Int,
 
     clickedForward : () -> Unit,
     clickedBackward : () -> Unit
@@ -58,7 +59,7 @@ fun DragonsScreen(
             Text(currentDragonType, modifier = Modifier.padding(vertical = 10.dp), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(currentDragonDesc, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Normal)
+            Text(currentDragonDesc, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Normal, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
 
         }
 
@@ -71,15 +72,17 @@ fun DragonsScreen(
         {
             // GO BACK button
             Image(
-                painter = painterResource(id = R.drawable.arrow_key_left), // TODO Replace with backwards sprite
+                painter = painterResource(id = R.drawable.arrow_key_left),
                 contentDescription = "Back button",
                 modifier = Modifier
+                    .size(70.dp)
                     .align(Alignment.CenterVertically)
+                    .padding(horizontal = 5.dp)
                     .clickable{clickedBackward()}
             )
             // DRAGON image
             Image(
-                painter = painterResource(id = R.drawable.filler_icon), // TODO Replace with dragon sprite
+                painter = painterResource(id = currentDragonImage),
                 contentDescription = "Dragon",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -87,10 +90,12 @@ fun DragonsScreen(
             )
             // GO FORWARD button
             Image(
-                painter = painterResource(id = R.drawable.arrow_key_right), // TODO Replace with forward sprite
+                painter = painterResource(id = R.drawable.arrow_key_right),
                 contentDescription = "Next button",
                 modifier = Modifier
+                    .size(70.dp)
                     .align(Alignment.CenterVertically)
+                    .padding(horizontal = 5.dp)
                     .clickable{clickedForward()}
             )
         }
