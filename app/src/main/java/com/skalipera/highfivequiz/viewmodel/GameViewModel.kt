@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.skalipera.highfivequiz.PlayerStatsManager
 import com.skalipera.highfivequiz.R
 import com.skalipera.highfivequiz.ui.utility.GamePayload
 import com.skalipera.highfivequiz.ui.utility.PayloadType
@@ -14,7 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-class GameViewModel : ViewModel() {
+class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() {
     enum class ScreenType() {
         DRAGONS,
         HOME,
@@ -45,6 +47,8 @@ class GameViewModel : ViewModel() {
         val answers : List<String>,
         val correctAnswer : Int
     )
+
+    private var allQuestionsBank: List<Question> = emptyList()
 
     // DRAGON DATA
     data class Dragon(
@@ -95,6 +99,19 @@ class GameViewModel : ViewModel() {
     var selectedDragon by mutableStateOf(myDragons[0])
         private set
 
+    init {
+        // Load the saved data when the ViewModel is created
+        viewModelScope.launch {
+            statsManager.playerNicknameFlow.collect { playerNickname = it }
+        }
+        viewModelScope.launch {
+            statsManager.playerRankFlow.collect { playerRank = it }
+        }
+        viewModelScope.launch {
+            statsManager.playerCoinsFlow.collect { playerCoinAmount = it }
+        }
+    }
+
     fun equipDragon(dragon: Dragon) {
         selectedDragon = dragon
         navigateTo(ScreenType.HOME)
@@ -114,6 +131,10 @@ class GameViewModel : ViewModel() {
         private set
     var pastQuestionTopics by mutableStateOf<MutableList<QuestionTopic>>(mutableListOf())
         private set
+    var currentAnswersHistory: MutableList<Boolean> = MutableList(7) { false }
+
+    var currentQuestionNumberForUI by mutableStateOf(0)
+        private set
     var timeRemaining by mutableStateOf(60) // in seconds
         private set
 
@@ -124,6 +145,34 @@ class GameViewModel : ViewModel() {
         private set
     var opponentName by mutableStateOf<String?>(null)
         private set
+
+    var isLocalReady by mutableStateOf(false)
+        private set
+
+    var isOpponentReady by mutableStateOf(false)
+        private set
+
+    fun onReadyClicked() {
+        isLocalReady = true
+
+        val readypayload = GamePayload(PayloadType.READY, "Y")
+        sendNetworkMessage?.invoke(Gson().toJson(readypayload))
+
+        checkIfBothReadyForGame()
+    }
+
+    // Called by NearbyController when READY payload arrives
+    fun onOpponentReadyReceived() {
+        isOpponentReady = true
+        checkIfBothReadyForGame()
+    }
+    private fun checkIfBothReadyForGame() {
+        if (isLocalReady && isOpponentReady && currentScreen == ScreenType.START_SCREEN) {
+            if (isHost) {
+                generateAndSendNextRound()
+            }
+        }
+    }
     fun onSearchingStatusChanged(searching: Boolean) {
         isSearching = searching
     }
@@ -138,10 +187,6 @@ class GameViewModel : ViewModel() {
 
         val payload = GamePayload(PayloadType.DRAGON_ID, selectedDragon.id)
         sendNetworkMessage?.invoke(Gson().toJson(payload))
-
-        if (isHost) {
-            generateAndSendNextRound()
-        }
 
     }
 
@@ -173,16 +218,33 @@ class GameViewModel : ViewModel() {
     fun updateNickname(newName: String) {
         if (newName.isNotBlank() && newName.length <= 12) {
             playerNickname = newName
-            // save to database
+
+            viewModelScope.launch {
+                statsManager.saveNickname(newName)
+            }
+        }
+    }
+    fun addCoins(amount: Int) {
+        playerCoinAmount += amount
+        viewModelScope.launch {
+            statsManager.saveCoins(playerCoinAmount)
         }
     }
 
-    fun submitQuizAnswer(answerIndex: Int) {
-        val currentQ = currentQuestions[currentQuestionIndex]
-        if (answerIndex == currentQ.correctAnswer) {
-            myRoundScore += 1
+    fun updateRank(newRank: Int) {
+        playerRank = newRank
+        viewModelScope.launch {
+            statsManager.saveRank(playerRank)
         }
+    }
 
+    fun submitQuizAnswer(answerString: String) {
+        val currentQ = currentQuestions[currentQuestionIndex]
+        if (answerString == currentQ.answers[currentQ.correctAnswer]) {
+            myRoundScore += 1
+            currentAnswersHistory[currentQuestionNumberForUI] = true
+        }
+        currentQuestionNumberForUI++
         if (currentQuestionIndex < currentQuestions.size - 1) {
             // Next question
             currentQuestionIndex += 1
@@ -201,6 +263,10 @@ class GameViewModel : ViewModel() {
         currentQuestionIndex = 0
         opponentDragon = allDragons[0]
         pastQuestionTopics = mutableListOf()
+        isLocalReady = false
+        isOpponentReady = false
+        currentQuestionNumberForUI = 0
+        currentAnswersHistory = MutableList(7) { false }
     }
     // TODO(rematch implementation: dont disconnect opponent here)
     fun onOpponentDisconnected() {
@@ -244,13 +310,26 @@ class GameViewModel : ViewModel() {
         onQuestionsReceivedFromHost(selectedQuestions)
     }
 
+    // called from MainActivity
+    fun loadQuestionBank(jsonString: String) {
+        val listType = object : TypeToken<List<Question>>() {}.type
+        allQuestionsBank = Gson().fromJson(jsonString, listType)
+    }
+
     private fun getQuestionsForTopic(topic: QuestionTopic) : List<Question> {
-        TODO("Not yet implemented")
-        return emptyList()
+        // Filter the full bank to only return questions that match the requested topic
+        return allQuestionsBank.filter { it.topic == topic }
     }
 
     private fun finishRoundLocally() {
         navigateTo(ScreenType.WAITING_FOR_OPPONENT)
+
+        // ADD COINS!
+        addCoins(myRoundScore)
+
+        // reset question count and history
+        currentQuestionNumberForUI = 0
+        currentAnswersHistory = MutableList(7) { false }
 
         val payload = GamePayload(PayloadType.ROUND_SCORE, myRoundScore.toString())
         sendNetworkMessage?.invoke(Gson().toJson(payload))
@@ -276,7 +355,7 @@ class GameViewModel : ViewModel() {
 
     // Called when the Accelerometer detects a physical bump!
     fun onPhysicalBumpDetected() {
-        if (currentScreen == ScreenType.BATTLE_SCREEN) {
+        if (currentScreen == ScreenType.BATTLE_BUMP) {
             resolveCombat()
         }
     }
@@ -285,7 +364,7 @@ class GameViewModel : ViewModel() {
         // If I am waiting, and the opponent has sent a valid score
         if (currentScreen == ScreenType.WAITING_FOR_OPPONENT && opponentRoundScore >= 0) {
             // Both are done! Time to bump phones.
-            navigateTo(ScreenType.BATTLE_SCREEN)
+            navigateTo(ScreenType.BATTLE_BUMP)
         }
     }
 
@@ -302,7 +381,7 @@ class GameViewModel : ViewModel() {
         }
     }
     private fun resolveCombat() {
-        navigateTo(ScreenType.BATTLE_BUMP)
+        navigateTo(ScreenType.BATTLE_SCREEN)
 
         // Calculate Damage (Score * 10)
         var myDamage = myRoundScore * 0.5
@@ -326,14 +405,16 @@ class GameViewModel : ViewModel() {
             delay(3000)
             if (myHp <= 0 || opponentHp <= 0 || pastQuestionTopics.count() == QuestionTopic.entries.count()) {
                 if (myHp <= 0) {
+                    updateRank(playerRank-3)
                     navigateTo(ScreenType.LOSE_SCREEN)
-                    playerRank -= 3
                 }
                 else if (opponentHp <= 0) {
+                    updateRank(playerRank+5)
+                    addCoins(30)
                     navigateTo(ScreenType.WIN_SCREEN)
-                    playerRank += 3
                 }
                 else if (pastQuestionTopics.count() == QuestionTopic.entries.count()) {
+                    addCoins(15)
                     navigateTo(ScreenType.DRAW_SCREEN)
                 }
             } else {

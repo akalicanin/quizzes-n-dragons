@@ -14,13 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun WaitingForOpponentsScreen() {
+fun WaitingForOpponentsScreen(roundScore: Int) {
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.DarkGray),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     )
     {
-        Text("Waiting for opponent to finish...", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Normal)
+        Text("Waiting for opponent to finish...", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.Normal)
+        Text("This round, you won $roundScore.toString() coins!", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
     }
 }

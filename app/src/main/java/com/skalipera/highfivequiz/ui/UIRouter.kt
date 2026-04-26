@@ -121,16 +121,24 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                             )
                         }
                         ScreenType.QUIZ_ACTIVE -> {
-                            //QuizScreen(                        )
+                            QuizScreen(
+                                viewModel.currentQuestions.get(1).topic.toString(),
+                                viewModel.currentQuestions.get(viewModel.currentQuestionIndex).text,
+                                viewModel.currentQuestions.get(viewModel.currentQuestionIndex).answers,
+                                viewModel.currentQuestionIndex,
+                                viewModel.currentAnswersHistory,
+                                viewModel.timeRemaining,
+                                onAnswerSelected = { chosenAnswer -> viewModel.submitQuizAnswer(chosenAnswer) }
+                            )
                         }
                         ScreenType.WAITING_FOR_OPPONENT -> {
-                            WaitingForOpponentsScreen()
+                            WaitingForOpponentsScreen(viewModel.myRoundScore)
                         }
                         ScreenType.START_SCREEN -> {
                             StartScreen(
                                 isHost = viewModel.isHost,
                                 onReadyClicked = {
-                                    // Logic for ready
+                                    viewModel.onReadyClicked()
                                 },
                                 onSettingsClicked = {
                                     showSettingsDialog = true
@@ -150,13 +158,22 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                             )
                         }
                         ScreenType.WIN_SCREEN -> {
-                            WinScreen()
+                            WinScreen(
+                                viewModel.playerRank,
+                                onHomeClicked = { viewModel.navigateTo(ScreenType.HOME) }
+                            )
                         }
                         ScreenType.LOSE_SCREEN -> {
-                            LoseScreen()
+                            LoseScreen(
+                                viewModel.playerRank,
+                                onHomeClicked = { viewModel.navigateTo(ScreenType.HOME) }
+                            )
                         }
                         ScreenType.DRAW_SCREEN -> {
-                            DrawScreen()
+                            DrawScreen(
+                                viewModel.playerRank,
+                                onHomeClicked = { viewModel.navigateTo(ScreenType.HOME) }
+                            )
                         }
                     }
                 }

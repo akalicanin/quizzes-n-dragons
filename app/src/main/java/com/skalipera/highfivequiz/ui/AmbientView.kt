@@ -148,16 +148,16 @@ fun AmbientView(
         // rank HUD
         Column(
             modifier = Modifier
-                .align(Alignment.TopStart) // Float this in the top left corner of the ambient view
+                .align(Alignment.TopStart) // top left corner of the ambient view
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally // Center the text within this column
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "RANK",
                 color = Color.LightGray,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp // Adds a cool game-like spacing between letters
+                letterSpacing = 2.sp
             )
             Text(
                 text = rank.toString(),

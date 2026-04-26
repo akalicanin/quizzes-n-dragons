@@ -21,6 +21,6 @@ fun BattleScreen() {
         verticalArrangement = Arrangement.Center
     )
     {
-        Text("BATTLE!", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Normal)
+        Text("BANG!", color = Color.White, fontSize = 50.sp, fontWeight = FontWeight.Bold)
     }
 }

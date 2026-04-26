@@ -106,6 +106,9 @@ class NearbyController(
 
                 // Decide what to do based on the type
                 when (gamePayload.type) {
+                    PayloadType.READY -> {
+                        viewModel.onOpponentReadyReceived()
+                    }
                     PayloadType.DRAGON_ID -> {
                         // The data is just the simple string ID
                         viewModel.onOpponentDragonReceived(gamePayload.data)

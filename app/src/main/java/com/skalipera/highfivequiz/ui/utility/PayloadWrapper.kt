@@ -3,7 +3,8 @@ package com.skalipera.highfivequiz.ui.utility
 enum class PayloadType {
     DRAGON_ID,
     QUESTIONS,
-    ROUND_SCORE
+    ROUND_SCORE,
+    READY
 }
 
 data class GamePayload(
