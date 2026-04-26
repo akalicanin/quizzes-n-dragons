@@ -39,6 +39,10 @@ class MainActivity : ComponentActivity() {
         }
         nearbyController = NearbyController(this, gameViewModel)
 
+        gameViewModel.sendNetworkMessage = { jsonString ->
+            nearbyController.sendData(jsonString)
+        }
+
         setContent {
             HighFiveQuizTheme {
                 UIRouter(gameViewModel, nearbyController)

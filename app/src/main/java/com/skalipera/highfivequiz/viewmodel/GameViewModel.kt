@@ -6,7 +6,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.skalipera.highfivequiz.R
+import com.skalipera.highfivequiz.ui.utility.GamePayload
+import com.skalipera.highfivequiz.ui.utility.PayloadType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -101,6 +104,9 @@ class GameViewModel : ViewModel() {
     var isHost by mutableStateOf(false)
         private set
 
+    // The Controller will listen to this lambda to send data over the network
+    var sendNetworkMessage: ((String) -> Unit)? = null
+
     // Game loop variables
     var currentQuestions by mutableStateOf<List<Question>>(emptyList())
         private set
@@ -129,6 +135,14 @@ class GameViewModel : ViewModel() {
         currentMessageText = "Matched with: $name!"
         isMessageVisible = true
         navigateTo(ScreenType.START_SCREEN)
+
+        val payload = GamePayload(PayloadType.DRAGON_ID, selectedDragon.id)
+        sendNetworkMessage?.invoke(Gson().toJson(payload))
+
+        if (isHost) {
+            generateAndSendNextRound()
+        }
+
     }
 
     // Player Health & Scores
@@ -212,10 +226,12 @@ class GameViewModel : ViewModel() {
         val allQuestionsForTopic = getQuestionsForTopic(topic)
         val selectedQuestions = allQuestionsForTopic.shuffled().take(7)
 
+        val questionsJsonString = Gson().toJson(selectedQuestions)
+        val payload = GamePayload(PayloadType.QUESTIONS, questionsJsonString)
+        sendNetworkMessage?.invoke(Gson().toJson(payload))
+
         // Set them locally
         onQuestionsReceivedFromHost(selectedQuestions)
-
-        // TODO: Tell NetworkLayer to serialize `selectedQuestions` and send to Client
     }
 
     private fun getQuestionsForTopic(topic: QuestionTopic) : List<Question> {
@@ -225,12 +241,12 @@ class GameViewModel : ViewModel() {
 
     private fun finishRoundLocally() {
         navigateTo(ScreenType.WAITING_FOR_OPPONENT)
-        // TODO: Tell NetworkLayer to send `myRoundScore` to opponent
+
+        val payload = GamePayload(PayloadType.ROUND_SCORE, myRoundScore.toString())
+        sendNetworkMessage?.invoke(Gson().toJson(payload))
 
         checkIfBothFinished()
     }
-
-    // --- NETWORK CALLBACKS (Called by NearbyController) ---
 
     // Host generated questions and sent them to us (the Client)
     fun onQuestionsReceivedFromHost(questions: List<Question>) {

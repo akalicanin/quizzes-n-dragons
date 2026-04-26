@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation("com.google.code.gson:gson:2.10.1")
     //za nearby
     //implementation 'com.google.android.gms:play-services-nearby:19.3.0'
     implementation(libs.play.services.nearby)

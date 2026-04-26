@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.Log
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.skalipera.highfivequiz.ui.utility.GamePayload
+import com.skalipera.highfivequiz.ui.utility.PayloadType
 import com.skalipera.highfivequiz.viewmodel.GameViewModel
-
 
 class NearbyController(
     private val context: Context,
@@ -13,6 +16,8 @@ class NearbyController(
 ) {
     private val connectionsClient = Nearby.getConnectionsClient(context)
     private val serviceId = "com.skalipera.highfivequiz.P2P"
+
+    private val gson = Gson()
     var opponentEndpointId: String? = null
     var opponentName: String? = null
     private var isConnecting = false
@@ -93,7 +98,32 @@ class NearbyController(
     private val payloadCallback = object : PayloadCallback() {
         override fun onPayloadReceived(endpointId: String, payload: Payload)
         {
+            if (payload.type == Payload.Type.BYTES) {
+                val jsonString = String(payload.asBytes()!!)
 
+                //Convert the incoming string back into our GamePayload wrapper
+                val gamePayload = gson.fromJson(jsonString, GamePayload::class.java)
+
+                // Decide what to do based on the type
+                when (gamePayload.type) {
+                    PayloadType.DRAGON_ID -> {
+                        // The data is just the simple string ID
+                        viewModel.onOpponentDragonReceived(gamePayload.data)
+                    }
+                    PayloadType.QUESTIONS -> {
+                        // Because it's a List<Question>, Gson needs a TypeToken to parse it correctly
+                        val listType = object : TypeToken<List<GameViewModel.Question>>() {}.type
+                        val questions: List<GameViewModel.Question> = gson.fromJson(gamePayload.data, listType)
+
+                        viewModel.onQuestionsReceivedFromHost(questions)
+                    }
+                    PayloadType.ROUND_SCORE -> {
+                        // The data is just a number string
+                        val score = gamePayload.data.toInt()
+                        viewModel.onOpponentFinishedRound(score)
+                    }
+                }
+            }
         }
         override fun onPayloadTransferUpdate(endpointId: String, update: PayloadTransferUpdate) {}
     }
