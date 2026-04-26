@@ -62,20 +62,21 @@ fun DragonsScreen(
             // row za naziv i stats
             Column(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1.2f) // Increased weight slightly to provide more room
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.Top // Anchor to top so positions are fixed
             )
             {
+                Spacer(modifier = Modifier.height(24.dp)) // Fixed offset from the top
                 Text(
                     "DRAGON INFO",
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,27 +101,29 @@ fun DragonsScreen(
 
                 Text(
                     currentDragonType,
-                    modifier = Modifier.padding(vertical = 10.dp),
+                    modifier = Modifier.padding(vertical = 8.dp),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    currentDragonDesc,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                )
-
+                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.TopCenter) {
+                    Text(
+                        currentDragonDesc,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
 
             // Row right for dragon image and forward/backward buttons
             Row(
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(1.8f) // Adjusted weight to balance with the top section
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
