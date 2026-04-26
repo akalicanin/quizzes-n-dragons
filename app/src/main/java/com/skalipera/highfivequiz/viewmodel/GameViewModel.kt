@@ -469,7 +469,7 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
     }
 
     private fun startTimer() {
-        timeRemaining = 20
+        timeRemaining = 30
         viewModelScope.launch {
             while (timeRemaining > 0 && currentScreen == ScreenType.QUIZ_ACTIVE) {
                 delay(1000)
@@ -491,14 +491,14 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         navigateTo(ScreenType.BATTLE_SCREEN)
 
         // Calculate Damage (Score * 0.7)
-        var myDamage = myRoundScore * 0.7
-        var opponentDamage = opponentRoundScore * 0.7
+        var myDamage = myRoundScore * 1.5
+        var opponentDamage = opponentRoundScore * 1.5
 
         // Apply Dragon buffs if types match
         val roundTopic = currentQuestions.firstOrNull()?.topic
         if (roundTopic != null) {
             if (selectedDragon.type == roundTopic) {
-                myDamage *= 1.10
+                myDamage *= 1.2
             }
             if (opponentDragon.type == roundTopic) {
                 opponentDamage *= 1.10

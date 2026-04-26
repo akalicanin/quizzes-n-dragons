@@ -75,7 +75,7 @@ fun WinScreen(
             val buttonText = when {
                 isRematchRequested && isOpponentRematchRequested -> "STARTING..."
                 isRematchRequested -> "WAITING FOR OPPONENT..."
-                isOpponentRematchRequested -> "OPPONENT WANTS REMATCH!"
+                isOpponentRematchRequested -> "REMATCH REQUESTED"
                 else -> "REMATCH"
             }
 
