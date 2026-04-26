@@ -35,7 +35,7 @@ fun TopBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(barHeight.dp)
-            .background(Color.DarkGray)
+            .background(Color.Transparent)
             // padding keeps things from touching the very edge of the phone screen
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -70,7 +70,7 @@ fun TopBar(
             horizontalArrangement = Arrangement.spacedBy(16.dp) // Gap between coins and settings
         ) {
 
-            // The Coin Counter Group
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)

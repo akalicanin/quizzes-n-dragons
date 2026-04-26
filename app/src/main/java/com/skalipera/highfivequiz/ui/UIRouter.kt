@@ -9,11 +9,9 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.skalipera.highfivequiz.NearbyController
-import com.skalipera.highfivequiz.R
 import com.skalipera.highfivequiz.ui.dialogs.ProfileDialog
 import com.skalipera.highfivequiz.ui.dialogs.SettingsDialog
 import com.skalipera.highfivequiz.viewmodel.GameViewModel
@@ -37,20 +34,19 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
     var showSettingsDialog by remember { mutableStateOf(false) }
     var showProfileDialog by remember { mutableStateOf(false) }
 
-    // 2. LAUNCHER ZA DOZVOLE
-    // Ovo se pokreće kada korisnik klikne na Play dugme
+    // LAUNCHER ZA DOZVOLE
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         val allGranted = permissions.values.all { it }
         if (allGranted) {
-            // Ako su sve dozvole date, pokreni pretragu iz kontrolera
             nearbyController.startPlay()
         } else {
             Toast.makeText(context, "Permissions are required to play!", Toast.LENGTH_SHORT).show()
         }
     }
 
+    // TODO(Da pecina bude default slika? Kao resenje za to da ambient view pokriva celi ekran)
     Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray)) {
         Column(modifier = Modifier.fillMaxSize()) {
 
@@ -80,7 +76,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                     label = "Screen Transition"
                 ) { screenToDraw ->
                     when (screenToDraw) {
-                        GameViewModel.ScreenType.HOME -> {
+                        ScreenType.HOME -> {
                             AmbientView(
                                 rank = viewModel.playerRank,
                                 selectedDragonImage = viewModel.selectedDragon.imageResId,
@@ -103,7 +99,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                 }
                             )
                         }
-                        GameViewModel.ScreenType.DRAGONS -> {
+                        ScreenType.DRAGONS -> {
                             DragonsScreen(
                                 "Denaprom",
                                 "Mathematical, LEGENDARY",
@@ -113,10 +109,10 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                 clickedBackward = {}
                             )
                         }
-                        GameViewModel.ScreenType.SHOP -> {
+                        ScreenType.SHOP -> {
                             ShopScreen()
                         }
-                        GameViewModel.ScreenType.DRAGON_SELECT -> {
+                        ScreenType.DRAGON_SELECT -> {
                             DragonSelectScreen(
                                 dragons = viewModel.myDragons,
                                 onDragonSelected = { chosenDragon ->
@@ -124,28 +120,30 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                 }
                             )
                         }
-                        GameViewModel.ScreenType.QUIZ_ACTIVE -> {
+                        ScreenType.QUIZ_ACTIVE -> {
                             //QuizScreen(                        )
                         }
-                        GameViewModel.ScreenType.WAITING_FOR_OPPONENT -> {
+                        ScreenType.WAITING_FOR_OPPONENT -> {
                             WaitingForOpponentsScreen()
                         }
-                        GameViewModel.ScreenType.START_SCREEN -> {
+                        ScreenType.START_SCREEN -> {
                             StartScreen()
                         }
-                        GameViewModel.ScreenType.BATTLE_SCREEN -> {
+                        ScreenType.BATTLE_SCREEN -> {
                             BattleScreen()
                         }
-                        GameViewModel.ScreenType.BATTLE_BUMP -> {
-                            BattleBumpScreen()
+                        ScreenType.BATTLE_BUMP -> {
+                            BattleBumpScreen(
+                                onBump = { viewModel.onPhysicalBumpDetected() }
+                            )
                         }
-                        GameViewModel.ScreenType.WIN_SCREEN -> {
+                        ScreenType.WIN_SCREEN -> {
                             WinScreen()
                         }
-                        GameViewModel.ScreenType.LOSE_SCREEN -> {
+                        ScreenType.LOSE_SCREEN -> {
                             LoseScreen()
                         }
-                        GameViewModel.ScreenType.DRAW_SCREEN -> {
+                        ScreenType.DRAW_SCREEN -> {
                             DrawScreen()
                         }
                     }

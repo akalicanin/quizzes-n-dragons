@@ -55,19 +55,19 @@ fun AmbientView(
 
         // background Image
         Image(
-            painter = painterResource(id = R.drawable.cave_background), // Replace with dungeon/forest background
+            painter = painterResource(id = R.drawable.cave_background),
             contentDescription = "Ambient Background",
-            contentScale = ContentScale.Crop, // Zooms the image to perfectly fill the box without stretching
+            contentScale = ContentScale.Crop, // Zooms the image without stretching
             modifier = Modifier.fillMaxSize()
         )
 
         // main dragon
         Image(
-            painter = painterResource(id = selectedDragonImage), // Replaced filler_dragon with selectedDragonImage
+            painter = painterResource(id = selectedDragonImage),
             contentDescription = "Your Dragon",
             modifier = Modifier
-                .align(Alignment.Center) // Put him right in the middle
-                .size(320.dp) // Make him big!
+                .align(Alignment.Center)
+                .size(320.dp)
                 .graphicsLayer {
                     // Apply the breathing animation scale to the X and Y axes
                     scaleX = breathingScale

@@ -35,7 +35,7 @@ fun BottomBar(currentScreen : GameViewModel.ScreenType,
         Row(
             modifier = Modifier.fillMaxWidth()
                 .height(barHeight.dp)
-                .background(Color.DarkGray)
+                .background(Color.Transparent)
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
