@@ -127,7 +127,19 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                             WaitingForOpponentsScreen()
                         }
                         ScreenType.START_SCREEN -> {
-                            StartScreen()
+                            StartScreen(
+                                isHost = viewModel.isHost,
+                                onReadyClicked = {
+                                    // Logic for ready
+                                },
+                                onSettingsClicked = {
+                                    showSettingsDialog = true
+                                },
+                                onBackClicked = {
+                                    nearbyController.stopAll()
+                                    viewModel.abortMultiplayer()
+                                }
+                            )
                         }
                         ScreenType.BATTLE_SCREEN -> {
                             BattleScreen()

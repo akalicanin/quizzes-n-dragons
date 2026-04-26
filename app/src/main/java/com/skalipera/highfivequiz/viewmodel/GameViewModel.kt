@@ -191,12 +191,22 @@ class GameViewModel : ViewModel() {
     // TODO(rematch implementation: dont disconnect opponent here)
     fun onOpponentDisconnected() {
         isConnected = false
+        isSearching = false
         opponentName = null
         isHost = false
         resetGame()
         navigateTo(ScreenType.HOME)
         currentMessageText = "Opponent disconnected!"
         isMessageVisible = true
+    }
+
+    fun abortMultiplayer() {
+        isConnected = false
+        isSearching = false
+        opponentName = null
+        isHost = false
+        resetGame()
+        navigateTo(ScreenType.HOME)
     }
 
     fun generateAndSendNextRound() {
