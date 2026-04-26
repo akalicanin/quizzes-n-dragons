@@ -141,6 +141,8 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
     // Multiplayer states
     var isHost by mutableStateOf(false)
         private set
+    var receivedGameOver by mutableStateOf(false)
+        private set
 
     // The Controller will listen to this lambda to send data over the network
     var sendNetworkMessage: ((String) -> Unit)? = null
@@ -300,6 +302,7 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         pastQuestionTopics = mutableListOf()
         isLocalReady = false
         isOpponentReady = false
+        receivedGameOver = false
         currentQuestionNumberForUI = 0
         currentAnswersHistory = MutableList(7) { false }
     }
@@ -331,7 +334,6 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         val remainingList = topics.subtract(pastQuestionTopics.toSet())
 
         val topic = remainingList.toTypedArray().random()
-        pastQuestionTopics.add(topic)
 
         // Load 7 random questions
         val allQuestionsForTopic = getQuestionsForTopic(topic)
@@ -371,6 +373,12 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
 
     // Host generated questions and sent them to us (the Client)
     fun onQuestionsReceivedFromHost(questions: List<Question>) {
+        if (questions.isNotEmpty()) {
+            val topic = questions[0].topic
+            if (!pastQuestionTopics.contains(topic)) {
+                pastQuestionTopics.add(topic)
+            }
+        }
         currentQuestions = questions
         currentQuestionIndex = 0
         myRoundScore = 0
@@ -387,9 +395,11 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
 
     // Called by NetworkLayer when Host sends GAME_OVER
     fun onGameOverReceived() {
+        receivedGameOver = true
         if (currentScreen != ScreenType.WIN_SCREEN && 
             currentScreen != ScreenType.LOSE_SCREEN && 
-            currentScreen != ScreenType.DRAW_SCREEN) {
+            currentScreen != ScreenType.DRAW_SCREEN &&
+            currentScreen != ScreenType.BATTLE_SCREEN) {
             resolveCombat()
         }
     }
@@ -407,10 +417,13 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
             // Both are done! Time to bump phones.
             navigateTo(ScreenType.BATTLE_BUMP)
         }
+        else {
+            //resolveCombat()
+        }
     }
 
     private fun startTimer() {
-        timeRemaining = 60
+        timeRemaining = 20
         viewModelScope.launch {
             while (timeRemaining > 0 && currentScreen == ScreenType.QUIZ_ACTIVE) {
                 delay(1000)
@@ -427,18 +440,20 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
     private fun resolveCombat() {
         navigateTo(ScreenType.BATTLE_SCREEN)
 
-        // Calculate Damage (Score * 10)
+        // Calculate Damage (Score * 0.7)
         var myDamage = myRoundScore * 0.7
         var opponentDamage = opponentRoundScore * 0.7
 
-        // Apply Dragon buffs if types match (Add logic here later)
-        if (selectedDragon.type == currentQuestions.get(1).topic) {
-            myDamage *= 1.10
+        // Apply Dragon buffs if types match
+        val roundTopic = currentQuestions.firstOrNull()?.topic
+        if (roundTopic != null) {
+            if (selectedDragon.type == roundTopic) {
+                myDamage *= 1.10
+            }
+            if (opponentDragon.type == roundTopic) {
+                opponentDamage *= 1.10
+            }
         }
-        if (opponentDragon.type == currentQuestions.get(1).topic) {
-            opponentDamage *= 1.10
-        }
-
 
         // Subtract HP
         opponentHp -= myDamage.roundToInt()
@@ -447,7 +462,7 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         // Wait a few seconds to show animation, then check for game over or next round
         viewModelScope.launch {
             delay(1500)
-            if (myHp <= 0 || opponentHp <= 0 || pastQuestionTopics.count() == QuestionTopic.entries.count()) {
+            if (myHp <= 0 || opponentHp <= 0 || pastQuestionTopics.size == QuestionTopic.entries.size || receivedGameOver) {
                 
                 // If I am the host, tell the client the game is over
                 if (isHost) {
@@ -456,29 +471,25 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
                 }
 
                 if (myHp <= 0) {
-                    updateRank(playerRank-3)
+                    updateRank(playerRank - 3)
                     addCoins(totalCoinsWon)
                     navigateTo(ScreenType.LOSE_SCREEN)
-                }
-                else if (opponentHp <= 0) {
-                    updateRank(playerRank+5)
+                } else if (opponentHp <= 0) {
+                    updateRank(playerRank + 5)
                     totalCoinsWon += 30
                     addCoins(totalCoinsWon)
                     navigateTo(ScreenType.WIN_SCREEN)
-                }
-                else if (pastQuestionTopics.count() == QuestionTopic.entries.count()) {
+                } else if (pastQuestionTopics.size == QuestionTopic.entries.size || receivedGameOver) {
                     if (myHp > opponentHp) {
-                        updateRank(playerRank+5)
+                        updateRank(playerRank + 5)
                         totalCoinsWon += 30
                         addCoins(totalCoinsWon)
                         navigateTo(ScreenType.WIN_SCREEN)
-                    }
-                    else if (myHp < opponentHp) {
-                        updateRank(playerRank-3)
+                    } else if (myHp < opponentHp) {
+                        updateRank(playerRank - 3)
                         addCoins(totalCoinsWon)
                         navigateTo(ScreenType.LOSE_SCREEN)
-                    }
-                    else {
+                    } else {
                         totalCoinsWon += 15
                         addCoins(totalCoinsWon)
                         navigateTo(ScreenType.DRAW_SCREEN)
