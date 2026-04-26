@@ -148,5 +148,155 @@
     "text": "The ancient city of Rome was famously built on how many hills?",
     "answers": ["5", "7", "9", "12"],
     "correctAnswer": 1
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the speed of sound in air at room temperature?",
+    "answers": ["343 m/s", "150 m/s", "1,200 m/s", "500 m/s"],
+    "correctAnswer": 0
+  },
+  {
+    "topic": "MATH",
+    "text": "In geometry, what is the name of a polygon with 8 sides?",
+    "answers": ["Hexagon", "Heptagon", "Octagon", "Nonagon"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the primary law used to calculate the resistance in an electrical circuit?",
+    "answers": ["Newton's Law", "Ohm's Law", "Pascal's Principle", "Boyle's Law"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "MATH",
+    "text": "What is the value of 5 factorial (5!)?",
+    "answers": ["25", "60", "100", "120"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "MATH",
+    "text": "Which scientist is known for the Three Laws of Motion?",
+    "answers": ["Albert Einstein", "Isaac Newton", "Galileo Galilei", "Nikola Tesla"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which gas is most abundant in the Earth's atmosphere?",
+    "answers": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the chemical symbol for Table Salt?",
+    "answers": ["KCl", "NaCl", "MgCl2", "CaCl2"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the process by which liquid water turns into water vapor?",
+    "answers": ["Condensation", "Sublimation", "Evaporation", "Freezing"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "Which part of the brain is primarily responsible for balance and coordination?",
+    "answers": ["Cerebrum", "Cerebellum", "Brainstem", "Thalamus"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "SCIENCE",
+    "text": "What is the pH value of pure water?",
+    "answers": ["0", "5", "7", "14"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "HACKER",
+    "text": "Which protocol is used for sending emails?",
+    "answers": ["HTTP", "FTP", "SMTP", "SSH"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "HACKER",
+    "text": "What is the name of the world's first programmable computer?",
+    "answers": ["ENIAC", "Macintosh", "Altair", "IBM PC"],
+    "correctAnswer": 0
+  },
+  {
+    "topic": "HACKER",
+    "text": "In binary, what is the value of the number 1010?",
+    "answers": ["5", "8", "10", "12"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "HACKER",
+    "text": "Which data structure operates on a 'Last In, First Out' (LIFO) principle?",
+    "answers": ["Queue", "Array", "Linked List", "Stack"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "HACKER",
+    "text": "Who is considered the first computer programmer in history?",
+    "answers": ["Alan Turing", "Ada Lovelace", "Bill Gates", "Grace Hopper"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which artist painted 'The Starry Night'?",
+    "answers": ["Claude Monet", "Vincent van Gogh", "Salvador Dali", "Edvard Munch"],
+    "correctAnswer": 1
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which band released the best-selling album 'The Dark Side of the Moon'?",
+    "answers": ["The Beatles", "Led Zeppelin", "Pink Floyd", "The Rolling Stones"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Who is the lead actor in the movie 'The Matrix'?",
+    "answers": ["Brad Pitt", "Tom Cruise", "Keanu Reeves", "Johnny Depp"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "In which city can you find the Guggenheim Museum?",
+    "answers": ["New York", "Chicago", "Los Angeles", "Miami"],
+    "correctAnswer": 0
+  },
+  {
+    "topic": "POP_CULTURE",
+    "text": "Which play features the character Hamlet?",
+    "answers": ["Macbeth", "Othello", "The Tempest", "Hamlet"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Which civilization built the Great Pyramid of Giza?",
+    "answers": ["Ancient Greeks", "The Romans", "Ancient Egyptians", "The Aztecs"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "What is the smallest country in the world by area?",
+    "answers": ["Monaco", "San Marino", "Vatican City", "Liechtenstein"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Who was the 'Iron Lady' of British politics?",
+    "answers": ["Queen Victoria", "Theresa May", "Margaret Thatcher", "Princess Diana"],
+    "correctAnswer": 2
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "Which ocean is the largest on Earth?",
+    "answers": ["Atlantic", "Indian", "Arctic", "Pacific"],
+    "correctAnswer": 3
+  },
+  {
+    "topic": "GEOHISTORY",
+    "text": "In which country was the Titanic built?",
+    "answers": ["England", "Northern Ireland", "USA", "Scotland"],
+    "correctAnswer": 1
   }
 ]
