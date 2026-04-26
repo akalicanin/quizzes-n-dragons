@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.skalipera.highfivequiz.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class GameViewModel : ViewModel() {
     enum class ScreenType() {
@@ -131,21 +132,23 @@ class GameViewModel : ViewModel() {
     }
 
     // Player Health & Scores
-    var myHp by mutableStateOf(100)
+    var myHp by mutableStateOf(30)
         private set
-    var opponentHp by mutableStateOf(100)
+    var opponentHp by mutableStateOf(30)
         private set
     var myRoundScore by mutableStateOf(0)
         private set
     var opponentRoundScore by mutableStateOf(-1) // -1 means they haven't finished the round yet
         private set
-    var opponentDragon by mutableStateOf<Dragon?>(null)
+    var opponentDragon by mutableStateOf<Dragon>(allDragons[0])
         private set
 
     // Called by NetworkLayer when opponent sends their dragon choice
     fun onOpponentDragonReceived(dragonId: String) {
         // Find the dragon in allDragons list and set it
-        opponentDragon = allDragons.find { it.id == dragonId }
+        // PRILICNO SAM SIGURAN DA NE MOZE DA BUDE NULL!!!
+        opponentDragon = allDragons.find { it.id == dragonId }!!
+
     }
 
     // functions called from UI
@@ -176,18 +179,16 @@ class GameViewModel : ViewModel() {
     }
 
     fun resetGame() {
-        myHp = 100
-        opponentHp = 100
+        myHp = 30
+        opponentHp = 30
         myRoundScore = 0
         opponentRoundScore = -1
         currentQuestions = emptyList()
         currentQuestionIndex = 0
-        opponentDragon = null
+        opponentDragon = allDragons[0]
         pastQuestionTopics = mutableListOf()
-        // Don't reset 'isConnected' or 'opponentName' here if you want to play a rematch!
-        // But if someone disconnects:
     }
-
+    // TODO(rematch implementation: dont disconnect opponent here)
     fun onOpponentDisconnected() {
         isConnected = false
         opponentName = null
@@ -208,17 +209,18 @@ class GameViewModel : ViewModel() {
         pastQuestionTopics.add(topic)
 
         // Load 7 random questions
-        val allQuestionsForTopic = getQuestionsForTopic(topic) // You'll implement this to read from a list/JSON
-        //val selectedQuestions = allQuestionsForTopic.shuffled().take(7)
+        val allQuestionsForTopic = getQuestionsForTopic(topic)
+        val selectedQuestions = allQuestionsForTopic.shuffled().take(7)
 
         // Set them locally
-        //onQuestionsReceivedFromHost(selectedQuestions)
+        onQuestionsReceivedFromHost(selectedQuestions)
 
         // TODO: Tell NetworkLayer to serialize `selectedQuestions` and send to Client
     }
 
-    private fun getQuestionsForTopic(topic: QuestionTopic) {
+    private fun getQuestionsForTopic(topic: QuestionTopic) : List<Question> {
         TODO("Not yet implemented")
+        return emptyList()
     }
 
     private fun finishRoundLocally() {
@@ -277,26 +279,33 @@ class GameViewModel : ViewModel() {
         navigateTo(ScreenType.BATTLE_BUMP)
 
         // Calculate Damage (Score * 10)
-        var myDamage = myRoundScore * 10
-        var opponentDamage = opponentRoundScore * 10
+        var myDamage = myRoundScore * 0.5
+        var opponentDamage = opponentRoundScore * 0.5
 
         // Apply Dragon buffs if types match (Add logic here later)
+        if (selectedDragon.type == currentQuestions.get(1).topic) {
+            myDamage *= 1.10
+        }
+        if (opponentDragon.type == currentQuestions.get(1).topic) {
+            opponentDamage *= 1.10
+        }
+
 
         // Subtract HP
-        opponentHp -= myDamage
-        myHp -= opponentDamage
+        opponentHp -= myDamage.roundToInt()
+        myHp -= opponentDamage.roundToInt()
 
         // Wait a few seconds to show animation, then check for game over or next round
         viewModelScope.launch {
             delay(3000)
             if (myHp <= 0 || opponentHp <= 0 || pastQuestionTopics.count() == QuestionTopic.entries.count()) {
                 if (myHp <= 0) {
-                    navigateTo(ScreenType.WIN_SCREEN)
-                    playerRank += 5
-                }
-                else if (opponentHp <= 0) {
                     navigateTo(ScreenType.LOSE_SCREEN)
                     playerRank -= 3
+                }
+                else if (opponentHp <= 0) {
+                    navigateTo(ScreenType.WIN_SCREEN)
+                    playerRank += 3
                 }
                 else if (pastQuestionTopics.count() == QuestionTopic.entries.count()) {
                     navigateTo(ScreenType.DRAW_SCREEN)

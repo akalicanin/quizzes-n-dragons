@@ -56,6 +56,7 @@ class NearbyController(
             opponentEndpointId = null
             isConnecting = false
             Log.d("NearbyController", "Disconnected from $endpointId")
+            viewModel.onOpponentDisconnected()
         }
     }
 
