@@ -491,8 +491,8 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         navigateTo(ScreenType.BATTLE_SCREEN)
 
         // Calculate Damage (Score * 0.7)
-        var myDamage = myRoundScore * 1.5
-        var opponentDamage = opponentRoundScore * 1.5
+        var myDamage = myRoundScore * 1.35
+        var opponentDamage = opponentRoundScore * 1.35
 
         // Apply Dragon buffs if types match
         val roundTopic = currentQuestions.firstOrNull()?.topic
@@ -501,7 +501,7 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
                 myDamage *= 1.2
             }
             if (opponentDragon.type == roundTopic) {
-                opponentDamage *= 1.10
+                opponentDamage *= 1.20
             }
         }
 
@@ -520,30 +520,19 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
                     sendNetworkMessage?.invoke(Gson().toJson(payload))
                 }
 
-                if (myHp <= 0) {
-                    updateRank(playerRank - 3)
-                    addCoins(totalCoinsWon)
-                    navigateTo(ScreenType.LOSE_SCREEN)
-                } else if (opponentHp <= 0) {
+                if (myHp > opponentHp) {
                     updateRank(playerRank + 5)
                     totalCoinsWon += 30
                     addCoins(totalCoinsWon)
                     navigateTo(ScreenType.WIN_SCREEN)
-                } else if (pastQuestionTopics.size == QuestionTopic.entries.size || receivedGameOver) {
-                    if (myHp > opponentHp) {
-                        updateRank(playerRank + 5)
-                        totalCoinsWon += 30
-                        addCoins(totalCoinsWon)
-                        navigateTo(ScreenType.WIN_SCREEN)
-                    } else if (myHp < opponentHp) {
-                        updateRank(playerRank - 3)
-                        addCoins(totalCoinsWon)
-                        navigateTo(ScreenType.LOSE_SCREEN)
-                    } else {
-                        totalCoinsWon += 15
-                        addCoins(totalCoinsWon)
-                        navigateTo(ScreenType.DRAW_SCREEN)
-                    }
+                } else if (myHp < opponentHp) {
+                    updateRank(playerRank - 3)
+                    addCoins(totalCoinsWon)
+                    navigateTo(ScreenType.LOSE_SCREEN)
+                } else {
+                    totalCoinsWon += 15
+                    addCoins(totalCoinsWon)
+                    navigateTo(ScreenType.DRAW_SCREEN)
                 }
 
             } else {
