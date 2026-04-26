@@ -32,8 +32,8 @@ fun BattleBumpScreen(onBump : () -> Unit) {
         verticalArrangement = Arrangement.Center
     )
     {
-        Text("BUMP!", color = Color.White, fontSize = 48.sp, fontWeight = FontWeight.Bold)
+        Text("Get 'em!", color = Color.White, fontSize = 48.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Tap your phones together!", color = Color.LightGray, fontSize = 18.sp)
+        Text("Slash your phone at your opponent!", color = Color.LightGray, fontSize = 18.sp)
     }
 }
