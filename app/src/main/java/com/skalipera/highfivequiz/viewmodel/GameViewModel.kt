@@ -413,7 +413,7 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
 
         // Wait a few seconds to show animation, then check for game over or next round
         viewModelScope.launch {
-            delay(3000)
+            delay(1500)
             if (myHp <= 0 || opponentHp <= 0 || pastQuestionTopics.count() == QuestionTopic.entries.count()) {
                 if (myHp <= 0) {
                     updateRank(playerRank-3)
