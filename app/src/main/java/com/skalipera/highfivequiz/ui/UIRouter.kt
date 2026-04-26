@@ -126,7 +126,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                             QuizScreen(
                                 viewModel.currentQuestions.get(1).topic.toString(),
                                 viewModel.currentQuestions.get(viewModel.currentQuestionIndex).text,
-                                viewModel.currentQuestions.get(viewModel.currentQuestionIndex).answers.shuffled(),
+                                viewModel.currentQuestions.get(viewModel.currentQuestionIndex).answers,
                                 viewModel.currentQuestionIndex,
                                 viewModel.currentAnswersHistory,
                                 viewModel.timeRemaining,
