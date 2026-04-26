@@ -154,6 +154,8 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         private set
     var currentAnswersHistory: MutableList<Boolean> = MutableList(7) { false }
 
+    var totalCoinsWon by mutableStateOf(0)
+        private set
     var currentQuestionNumberForUI by mutableStateOf(0)
         private set
     var timeRemaining by mutableStateOf(60) // in seconds
@@ -274,6 +276,7 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         if (answerString == currentQ.answers[currentQ.correctAnswer]) {
             myRoundScore += 1
             currentAnswersHistory[currentQuestionNumberForUI] = true
+            totalCoinsWon++
         }
         currentQuestionNumberForUI++
         if (currentQuestionIndex < currentQuestions.size - 1) {
@@ -289,6 +292,7 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         myHp = 30
         opponentHp = 30
         myRoundScore = 0
+        totalCoinsWon = 0
         opponentRoundScore = -1
         currentQuestions = emptyList()
         currentQuestionIndex = 0
@@ -355,9 +359,6 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
     private fun finishRoundLocally() {
         navigateTo(ScreenType.WAITING_FOR_OPPONENT)
 
-        // ADD COINS!
-        addCoins(myRoundScore)
-
         // reset question count and history
         currentQuestionNumberForUI = 0
         currentAnswersHistory = MutableList(7) { false }
@@ -407,6 +408,9 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
                 timeRemaining -= 1
             }
             if (currentScreen == ScreenType.QUIZ_ACTIVE) {
+                if (myRoundScore > 1) {
+                    myRoundScore--
+                }
                 finishRoundLocally() // Time ran out!
             }
         }
@@ -415,8 +419,8 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         navigateTo(ScreenType.BATTLE_SCREEN)
 
         // Calculate Damage (Score * 10)
-        var myDamage = myRoundScore * 0.5
-        var opponentDamage = opponentRoundScore * 0.5
+        var myDamage = myRoundScore * 0.7
+        var opponentDamage = opponentRoundScore * 0.7
 
         // Apply Dragon buffs if types match (Add logic here later)
         if (selectedDragon.type == currentQuestions.get(1).topic) {
@@ -437,17 +441,34 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
             if (myHp <= 0 || opponentHp <= 0 || pastQuestionTopics.count() == QuestionTopic.entries.count()) {
                 if (myHp <= 0) {
                     updateRank(playerRank-3)
+                    addCoins(totalCoinsWon)
                     navigateTo(ScreenType.LOSE_SCREEN)
                 }
                 else if (opponentHp <= 0) {
                     updateRank(playerRank+5)
-                    addCoins(30)
+                    totalCoinsWon += 30
+                    addCoins(totalCoinsWon)
                     navigateTo(ScreenType.WIN_SCREEN)
                 }
                 else if (pastQuestionTopics.count() == QuestionTopic.entries.count()) {
-                    addCoins(15)
-                    navigateTo(ScreenType.DRAW_SCREEN)
+                    if (myHp > opponentHp) {
+                        updateRank(playerRank+5)
+                        totalCoinsWon += 30
+                        addCoins(totalCoinsWon)
+                        navigateTo(ScreenType.WIN_SCREEN)
+                    }
+                    else if (myHp < opponentHp) {
+                        updateRank(playerRank-3)
+                        addCoins(totalCoinsWon)
+                        navigateTo(ScreenType.LOSE_SCREEN)
+                    }
+                    else {
+                        totalCoinsWon += 15
+                        addCoins(totalCoinsWon)
+                        navigateTo(ScreenType.DRAW_SCREEN)
+                    }
                 }
+
             } else {
                 if (isHost) {
                     generateAndSendNextRound()

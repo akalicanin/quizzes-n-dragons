@@ -130,11 +130,12 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                 viewModel.currentQuestionIndex,
                                 viewModel.currentAnswersHistory,
                                 viewModel.timeRemaining,
-                                onAnswerSelected = { chosenAnswer -> viewModel.submitQuizAnswer(chosenAnswer) }
+                                onAnswerSelected = { chosenAnswer -> viewModel.submitQuizAnswer(chosenAnswer) },
+                                viewModel.myHp
                             )
                         }
                         ScreenType.WAITING_FOR_OPPONENT -> {
-                            WaitingForOpponentsScreen(viewModel.myRoundScore)
+                            WaitingForOpponentsScreen(viewModel.myRoundScore, viewModel.myHp)
                         }
                         ScreenType.START_SCREEN -> {
                             StartScreen(
@@ -161,22 +162,45 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                         }
                         ScreenType.WIN_SCREEN -> {
                             WinScreen(
-                                rankWon = 3, // This could be dynamic from ViewModel later
-                                goldWon = 50, // This could be dynamic from ViewModel later
+                                rankWon = 5,
+                                goldWon = viewModel.totalCoinsWon,
                                 onBackToMain = {
                                     nearbyController.stopAll()
                                     viewModel.abortMultiplayer()
                                 },
                                 onRematch = {
                                     // Logic for rematch TODO
-                                }
+                                },
+                                viewModel.myHp
                             )
                         }
                         ScreenType.LOSE_SCREEN -> {
-                            LoseScreen()
+                            LoseScreen(
+                                rankWon = -3,
+                                goldWon = viewModel.totalCoinsWon,
+                                onBackToMain = {
+                                    nearbyController.stopAll()
+                                    viewModel.abortMultiplayer()
+                                },
+                                onRematch = {
+                                    // Logic for rematch TODO
+                                },
+                                viewModel.myHp
+                            )
                         }
                         ScreenType.DRAW_SCREEN -> {
-                            DrawScreen()
+                            DrawScreen(
+                                rankWon = 0,
+                                goldWon = viewModel.totalCoinsWon,
+                                onBackToMain = {
+                                    nearbyController.stopAll()
+                                    viewModel.abortMultiplayer()
+                                },
+                                onRematch = {
+                                    // Logic for rematch TODO
+                                },
+                                viewModel.myHp
+                            )
                         }
                     }
                 }

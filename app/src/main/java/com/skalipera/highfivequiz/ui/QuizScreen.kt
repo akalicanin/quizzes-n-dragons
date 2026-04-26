@@ -25,7 +25,8 @@ fun QuizScreen(
     currentQuestionIndex: Int,
     answerHistory: List<Boolean>,
     timeLeft: Int,
-    onAnswerSelected: (String) -> Unit
+    onAnswerSelected: (String) -> Unit,
+    hp: Int
 ) {
     Column(
         modifier = Modifier
@@ -59,6 +60,13 @@ fun QuizScreen(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text ="♥ $hp",
+            color = Color.White,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
 
         // Current topic
         Text(

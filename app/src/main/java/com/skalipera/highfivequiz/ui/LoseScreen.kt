@@ -19,7 +19,8 @@ fun LoseScreen(
     rankWon: Int,
     goldWon: Int,
     onBackToMain: () -> Unit,
-    onRematch: () -> Unit
+    onRematch: () -> Unit,
+    hp: Int
 ) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.DarkGray),
@@ -35,10 +36,19 @@ fun LoseScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        Text(
+            text ="♥ $hp",
+            color = Color.White,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Rewards Section
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = "Rank Points: +$rankWon",
+                text = "Rank Points: $rankWon",
                 color = Color.White,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold

@@ -19,7 +19,8 @@ fun WinScreen(
     rankWon: Int,
     goldWon: Int,
     onBackToMain: () -> Unit,
-    onRematch: () -> Unit
+    onRematch: () -> Unit,
+    hp: Int
 ) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.DarkGray),
@@ -34,6 +35,15 @@ fun WinScreen(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text ="♥ $hp",
+            color = Color.White,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Rewards Section
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
