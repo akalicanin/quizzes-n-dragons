@@ -143,6 +143,10 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         private set
     var receivedGameOver by mutableStateOf(false)
         private set
+    var isLocalRematchRequested by mutableStateOf(false)
+        private set
+    var isOpponentRematchRequested by mutableStateOf(false)
+        private set
 
     // The Controller will listen to this lambda to send data over the network
     var sendNetworkMessage: ((String) -> Unit)? = null
@@ -302,6 +306,8 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
         pastQuestionTopics = mutableListOf()
         isLocalReady = false
         isOpponentReady = false
+        isLocalRematchRequested = false
+        isOpponentRematchRequested = false
         receivedGameOver = false
         currentQuestionNumberForUI = 0
         currentAnswersHistory = MutableList(7) { false }
@@ -401,6 +407,25 @@ class GameViewModel(private val statsManager: PlayerStatsManager) : ViewModel() 
             currentScreen != ScreenType.DRAW_SCREEN &&
             currentScreen != ScreenType.BATTLE_SCREEN) {
             resolveCombat()
+        }
+    }
+
+    fun onRematchClicked() {
+        isLocalRematchRequested = true
+        val payload = GamePayload(PayloadType.REMATCH, "YES")
+        sendNetworkMessage?.invoke(Gson().toJson(payload))
+        checkRematchStatus()
+    }
+
+    fun onOpponentRematchReceived() {
+        isOpponentRematchRequested = true
+        checkRematchStatus()
+    }
+
+    private fun checkRematchStatus() {
+        if (isLocalRematchRequested && isOpponentRematchRequested) {
+            resetGame()
+            navigateTo(ScreenType.START_SCREEN)
         }
     }
 

@@ -20,7 +20,9 @@ fun LoseScreen(
     goldWon: Int,
     onBackToMain: () -> Unit,
     onRematch: () -> Unit,
-    hp: Int
+    hp: Int,
+    isRematchRequested: Boolean = false,
+    isOpponentRematchRequested: Boolean = false
 ) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.DarkGray),
@@ -70,15 +72,27 @@ fun LoseScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Rematch Button
+            val buttonText = when {
+                isRematchRequested && isOpponentRematchRequested -> "STARTING..."
+                isRematchRequested -> "WAITING FOR OPPONENT..."
+                isOpponentRematchRequested -> "OPPONENT WANTS REMATCH!"
+                else -> "REMATCH"
+            }
+
             Box(
                 modifier = Modifier
                     .size(width = 250.dp, height = 60.dp)
                     .clip(CutCornerShape(12.dp))
-                    .background(Color(0xFF4CAF50))
-                    .clickable { onRematch() },
+                    .background(if (isRematchRequested) Color.Gray else Color(0xFF4CAF50))
+                    .clickable(enabled = !isRematchRequested) { onRematch() },
                 contentAlignment = Alignment.Center
             ) {
-                Text("REMATCH", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
+                Text(
+                    text = buttonText,
+                    color = Color.White,
+                    fontSize = if (isRematchRequested) 14.sp else 20.sp,
+                    fontWeight = FontWeight.Black
+                )
             }
 
             // Back to Main Button

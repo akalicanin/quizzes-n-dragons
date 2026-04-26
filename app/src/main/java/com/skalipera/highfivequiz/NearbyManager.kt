@@ -134,6 +134,9 @@ class NearbyController(
                     PayloadType.GAME_OVER -> {
                         viewModel.onGameOverReceived()
                     }
+                    PayloadType.REMATCH -> {
+                        viewModel.onOpponentRematchReceived()
+                    }
                 }
             }
         }

@@ -5,7 +5,8 @@ enum class PayloadType {
     QUESTIONS,
     ROUND_SCORE,
     READY,
-    GAME_OVER
+    GAME_OVER,
+    REMATCH
 }
 
 data class GamePayload(
