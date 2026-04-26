@@ -131,6 +131,15 @@ class NearbyController(
                         val score = gamePayload.data.toInt()
                         viewModel.onOpponentFinishedRound(score)
                     }
+                    PayloadType.GAME_OVER -> {
+                        viewModel.onGameOverReceived()
+                    }
+                    PayloadType.REMATCH -> {
+                        viewModel.onOpponentRematchReceived()
+                    }
+                    PayloadType.BUMP -> {
+                        viewModel.onOpponentBumpReceived()
+                    }
                 }
             }
         }

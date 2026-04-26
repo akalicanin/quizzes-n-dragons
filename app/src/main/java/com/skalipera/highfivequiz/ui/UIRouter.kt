@@ -140,6 +140,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                         ScreenType.START_SCREEN -> {
                             StartScreen(
                                 isHost = viewModel.isHost,
+                                isReady = viewModel.isLocalReady,
                                 onReadyClicked = {
                                     viewModel.onReadyClicked()
                                 },
@@ -169,9 +170,11 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                     viewModel.abortMultiplayer()
                                 },
                                 onRematch = {
-                                    // Logic for rematch TODO
+                                    viewModel.onRematchClicked()
                                 },
-                                viewModel.myHp
+                                hp = viewModel.myHp,
+                                isRematchRequested = viewModel.isLocalRematchRequested,
+                                isOpponentRematchRequested = viewModel.isOpponentRematchRequested
                             )
                         }
                         ScreenType.LOSE_SCREEN -> {
@@ -183,9 +186,11 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                     viewModel.abortMultiplayer()
                                 },
                                 onRematch = {
-                                    // Logic for rematch TODO
+                                    viewModel.onRematchClicked()
                                 },
-                                viewModel.myHp
+                                hp = viewModel.myHp,
+                                isRematchRequested = viewModel.isLocalRematchRequested,
+                                isOpponentRematchRequested = viewModel.isOpponentRematchRequested
                             )
                         }
                         ScreenType.DRAW_SCREEN -> {
@@ -197,9 +202,11 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                                     viewModel.abortMultiplayer()
                                 },
                                 onRematch = {
-                                    // Logic for rematch TODO
+                                    viewModel.onRematchClicked()
                                 },
-                                viewModel.myHp
+                                hp = viewModel.myHp,
+                                isRematchRequested = viewModel.isLocalRematchRequested,
+                                isOpponentRematchRequested = viewModel.isOpponentRematchRequested
                             )
                         }
                     }
