@@ -140,6 +140,7 @@ fun UIRouter(viewModel: GameViewModel, nearbyController: NearbyController) { // 
                         ScreenType.START_SCREEN -> {
                             StartScreen(
                                 isHost = viewModel.isHost,
+                                isReady = viewModel.isLocalReady,
                                 onReadyClicked = {
                                     viewModel.onReadyClicked()
                                 },

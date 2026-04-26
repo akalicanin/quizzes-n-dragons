@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun StartScreen(
     isHost: Boolean,
+    isReady: Boolean,
     onReadyClicked: () -> Unit,
     onSettingsClicked: () -> Unit,
     onBackClicked: () -> Unit
@@ -35,9 +36,11 @@ fun StartScreen(
         )
 
         // 1. READY Button
+        val readyColor = if (isReady) Color(0xFF1B5E20) else Color(0xFF4CAF50)
         StartScreenButton(
-            text = "READY",
-            color = Color(0xFF4CAF50),
+            text = if (isReady) "READY!" else "READY",
+            color = readyColor,
+            enabled = !isReady,
             onClick = onReadyClicked
         )
 
