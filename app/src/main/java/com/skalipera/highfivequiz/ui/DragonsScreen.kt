@@ -90,6 +90,7 @@ fun DragonsScreen(
                 painter = painterResource(id = R.drawable.arrow_key_right), // TODO Replace with forward sprite
                 contentDescription = "Next button",
                 modifier = Modifier
+                    .align(Alignment.CenterVertically)
                     .clickable{clickedForward()}
             )
         }
